@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# HelpAll Skills - Landing Page
 
-## Getting Started
+Landing page moderne pour la plateforme HelpAll Skills, spécialisée dans le coaching et les formations tech.
 
-First, run the development server:
+## Technologies Utilisées
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Next.js**: Framework React pour le rendu côté serveur et la génération de sites statiques
+- **TypeScript**: Typage statique pour JavaScript
+- **Tailwind CSS**: Framework CSS utility-first pour un design rapide et responsive
+- **Framer Motion**: Bibliothèque d'animations pour React
+- **React Three Fiber / Drei**: Bibliothèque pour créer des éléments 3D avec React
+- **Lottie**: Animations vectorielles interactives
+
+## Fonctionnalités
+
+- Design moderne et épuré avec palette de couleurs personnalisée
+- Animations fluides avec Framer Motion
+- Modèle 3D interactif avec React Three Fiber
+- Page entièrement responsive (mobile, tablette, desktop)
+- Formulaire de contact interactif
+- Témoignages avec slider animé
+- SEO optimisé
+
+## Structure du Projet
+
+```
+helpall-skills/
+├── public/              # Fichiers statiques
+├── src/
+│   ├── app/             # Pages de l'application Next.js
+│   ├── components/      # Composants React
+│   │   ├── 3d/          # Composants 3D avec React Three Fiber
+│   │   ├── layout/      # Composants de mise en page (Header, Footer)
+│   │   ├── sections/    # Sections principales de la landing page
+│   │   └── ui/          # Composants UI réutilisables
+│   └── lib/
+│       └── animations/  # Utilitaires pour les animations
+├── tailwind.config.js   # Configuration Tailwind CSS
+└── README.md            # Documentation
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Palette de Couleurs
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Blanc: `#FFFFFF`
+- Turquoise: `#0AB9A6`
+- Bleu vif: `#1261AC`
+- Bleu moyen: `#1660A9`
+- Noir: `#000000`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Typographie
 
-## Learn More
+La police Poppins est utilisée pour toute la typographie du site, avec différentes épaisseurs pour créer une hiérarchie visuelle claire.
 
-To learn more about Next.js, take a look at the following resources:
+## Installation et Démarrage
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Cloner le dépôt:
+   ```bash
+   git clone <url-du-depot>
+   cd helpall-skills
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. Installer les dépendances:
+   ```bash
+   npm install
+   ```
 
-## Deploy on Vercel
+3. Lancer le serveur de développement:
+   ```bash
+   npm run dev
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+4. Ouvrir http://localhost:3000 dans votre navigateur
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Déploiement
+
+Cette landing page peut être déployée sur n'importe quelle plateforme supportant Next.js, comme Vercel, Netlify ou GitHub Pages.
+
+## Possibilités d'Évolution
+
+- Intégration d'un système de blog
+- Ajout d'une authentification pour un espace membre
+- Intégration avec un CMS headless (Contentful, Strapi)
+- Ajout d'un système de paiement pour les inscriptions aux formations
+- Implémentation d'un chat en direct pour l'assistance client
+- Multilingue (anglais, espagnol, etc.)
+
+## Licence
+
+Ce projet est sous licence MIT.
