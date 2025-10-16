@@ -1,0 +1,231 @@
+/* Animations premium pour l'expérience ultra-moderne */
+
+@keyframes float-premium {
+  0%, 100% { 
+    transform: translateY(0px) scale(1) rotate(0deg); 
+    opacity: 0.7;
+  }
+  33% { 
+    transform: translateY(-15px) scale(1.05) rotate(2deg); 
+    opacity: 1;
+  }
+  66% { 
+    transform: translateY(-8px) scale(0.98) rotate(-1deg); 
+    opacity: 0.9;
+  }
+}
+
+@keyframes glow-pulse {
+  0% { 
+    box-shadow: 0 0 5px rgba(10, 185, 166, 0.2); 
+  }
+  50% { 
+    box-shadow: 0 0 40px rgba(10, 185, 166, 0.6), 0 0 60px rgba(18, 97, 172, 0.4); 
+  }
+  100% { 
+    box-shadow: 0 0 5px rgba(10, 185, 166, 0.2); 
+  }
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes particle-float {
+  0% { 
+    transform: translateY(100vh) translateX(0px) scale(0); 
+    opacity: 0;
+  }
+  10% { 
+    opacity: 1; 
+    transform: translateY(90vh) translateX(10px) scale(1);
+  }
+  90% { 
+    opacity: 1; 
+    transform: translateY(10vh) translateX(-10px) scale(1);
+  }
+  100% { 
+    transform: translateY(0vh) translateX(0px) scale(0); 
+    opacity: 0;
+  }
+}
+
+@keyframes shine-effect {
+  0% { transform: translateX(-100%) skewX(-15deg); }
+  100% { transform: translateX(200%) skewX(-15deg); }
+}
+
+@keyframes text-glow {
+  0%, 100% { 
+    text-shadow: 0 0 5px rgba(10, 185, 166, 0.5);
+  }
+  50% { 
+    text-shadow: 
+      0 0 10px rgba(10, 185, 166, 0.8),
+      0 0 20px rgba(10, 185, 166, 0.6),
+      0 0 30px rgba(18, 97, 172, 0.4);
+  }
+}
+
+@keyframes morphing-bg {
+  0% { 
+    background: radial-gradient(circle at 20% 50%, rgba(10, 185, 166, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(18, 97, 172, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+  }
+  33% { 
+    background: radial-gradient(circle at 60% 20%, rgba(10, 185, 166, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 20% 70%, rgba(18, 97, 172, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+  }
+  66% { 
+    background: radial-gradient(circle at 80% 80%, rgba(10, 185, 166, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 30%, rgba(18, 97, 172, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 20% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+  }
+  100% { 
+    background: radial-gradient(circle at 20% 50%, rgba(10, 185, 166, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(18, 97, 172, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+  }
+}
+
+/* Classes utilitaires premium */
+.animate-float-premium {
+  animation: float-premium 6s ease-in-out infinite;
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 3s ease-in-out infinite;
+}
+
+.animate-gradient-shift {
+  background: linear-gradient(-45deg, #0AB9A6, #1261AC, #8B5CF6, #0AB9A6);
+  background-size: 400% 400%;
+  animation: gradient-shift 8s ease infinite;
+}
+
+.animate-particle-float {
+  animation: particle-float 8s linear infinite;
+}
+
+.animate-text-glow {
+  animation: text-glow 4s ease-in-out infinite;
+}
+
+.animate-morphing-bg {
+  animation: morphing-bg 15s ease-in-out infinite;
+}
+
+/* Effets de brillance pour les boutons */
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-shine::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transform: translateX(-100%) skewX(-15deg);
+  transition: transform 0.6s;
+}
+
+.btn-shine:hover::before {
+  animation: shine-effect 0.8s ease-out;
+}
+
+/* Glass morphism effect */
+.glass-morphism {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Effet 3D pour les cards */
+.card-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease;
+}
+
+.card-3d:hover {
+  transform: rotateY(5deg) rotateX(5deg) scale(1.02);
+}
+
+/* Progress bar premium */
+.progress-premium {
+  background: linear-gradient(90deg, #0AB9A6, #1261AC, #8B5CF6);
+  background-size: 200% 100%;
+  animation: gradient-shift 2s ease infinite;
+  border-radius: 50px;
+  position: relative;
+}
+
+.progress-premium::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  border-radius: 50px;
+  animation: shine-effect 2s ease-in-out infinite;
+}
+
+/* Curseur personnalisé */
+.cursor-premium {
+  cursor: none;
+}
+
+.cursor-premium * {
+  cursor: none;
+}
+
+/* Scroll snap moderne */
+.scroll-snap-section {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+/* Animations de loading premium */
+@keyframes loading-premium {
+  0% {
+    transform: rotate(0deg) scale(1);
+    border-radius: 50%;
+  }
+  25% {
+    transform: rotate(90deg) scale(1.1);
+    border-radius: 30%;
+  }
+  50% {
+    transform: rotate(180deg) scale(1);
+    border-radius: 50%;
+  }
+  75% {
+    transform: rotate(270deg) scale(0.9);
+    border-radius: 70%;
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+    border-radius: 50%;
+  }
+}
+
+.loading-premium {
+  animation: loading-premium 2s ease-in-out infinite;
+}

@@ -35,39 +35,32 @@ const Header = () => {
   }, []);
 
   const navLinks = [
-    { name: 'Accueil', href: '#hero' },
-    { name: 'Coaching', href: '#coaching' },
-    { name: 'Formations', href: '#formations' },
-    { name: 'Coachs', href: '#coachs' },
     { name: 'À propos', href: '/about' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Contact', href: '/contact' },
   ];
 
   return (
     <header 
       className={`fixed w-full z-50 transition-all duration-500 ${
         isScrolled 
-          ? 'py-3 bg-white/90 backdrop-blur-md shadow-sm' 
-          : 'py-5 bg-transparent'
+          ? 'py-3 bg-white/95 backdrop-blur-xl shadow-lg border-b border-white/20' 
+          : 'py-6 bg-transparent'
       }`}
     >
       <div className="container-custom">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, ease: [0.65, 0, 0.35, 1] }}
-          >
-            <Link href="/" className="flex items-center group">
-              <div className="relative overflow-hidden">
-                <span className="text-xl font-bold gradient-text">
-                  HelpAll Skills
-                </span>
-                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-turquoise-500 to-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out origin-left"></span>
-              </div>
-            </Link>
-          </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.6, ease: [0.65, 0, 0.35, 1] }}
+                  >
+                    <Link href="/" className="flex items-center">
+                      <span className="text-xl font-bold gradient-text">
+                        HelpAll Skills
+                      </span>
+                    </Link>
+                  </motion.div>
 
           {/* Desktop Navigation */}
           <motion.nav 
@@ -84,13 +77,17 @@ const Header = () => {
                   href={link.href}
                   className="relative"
                 >
-                  <span className={`text-sm font-medium transition-all duration-300 hover:text-turquoise-500 ${
-                    isActive ? 'text-turquoise-500' : 'text-gray-800'
+                  <span className={`text-sm font-medium transition-all duration-300 hover:text-turquoise ${
+                    isActive 
+                      ? 'text-turquoise' 
+                      : isScrolled 
+                        ? 'text-gray-800' 
+                        : 'text-white'
                   }`}>
                     {link.name}
                     {isActive && (
                       <motion.span 
-                        className="absolute -bottom-1 left-0 right-0 h-0.5 bg-turquoise-500"
+                        className="absolute -bottom-1 left-0 right-0 h-0.5 bg-turquoise"
                         layoutId="activeNav"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -110,24 +107,25 @@ const Header = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2, ease: [0.65, 0, 0.35, 1] }}
           >
-            <a 
-              href="https://getskillsnow.mychariow.com/" 
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary text-sm flex items-center gap-2 group"
+            <motion.button 
+              className="btn-primary btn-shine text-sm flex items-center gap-2 group relative overflow-hidden"
+              whileHover={{ scale: 1.05, y: -1 }}
+              whileTap={{ scale: 0.95 }}
             >
-              Acheter formation
+              <span className="relative z-10">Parler à un expert</span>
               <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
               </svg>
-            </a>
+            </motion.button>
           </motion.div>
 
           {/* Mobile Menu Button */}
           <div className="md:hidden">
-            <button
+            <button 
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-gray-800 focus:outline-none"
+              className={`focus:outline-none transition-colors duration-300 ${
+                isScrolled ? 'text-gray-800' : 'text-white'
+              }`}
               aria-label="Toggle menu"
             >
               <svg 
@@ -184,7 +182,11 @@ const Header = () => {
                       <Link href={link.href}>
                         <span 
                           className={`block py-2 text-sm font-medium transition-all duration-300 ${
-                            isActive ? 'text-turquoise-500' : 'text-gray-800 hover:text-turquoise-500'
+                            isActive 
+                              ? 'text-turquoise' 
+                              : isScrolled 
+                                ? 'text-gray-800 hover:text-turquoise' 
+                                : 'text-white hover:text-turquoise'
                           }`}
                           onClick={() => setIsMobileMenuOpen(false)}
                         >
@@ -200,18 +202,15 @@ const Header = () => {
                     visible: { opacity: 1, x: 0 }
                   }}
                 >
-                  <a 
-                    href="https://getskillsnow.mychariow.com/" 
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button 
                     className="btn-primary text-center text-sm flex items-center justify-center gap-2"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    <span>Acheter formation</span>
+                    <span>Parler à un expert</span>
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
                     </svg>
-                  </a>
+                  </button>
                 </motion.div>
               </motion.div>
             </motion.div>
