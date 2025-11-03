@@ -872,70 +872,109 @@ const ImmersiveExperience = () => {
                 </motion.p>
 
                 <motion.div 
-                  className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+                  className="grid sm:grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 max-w-7xl mx-auto"
                   variants={staggerChildren}
                 >
                   {recommendedOffers.map((offer, index) => (
                     <motion.div
                       key={offer.id}
-                      className="group relative bg-white/95 backdrop-blur-xl rounded-2xl md:rounded-3xl p-6 md:p-8 border border-white/50 shadow-2xl hover:shadow-3xl transition-all cursor-pointer"
+                      className={`group relative bg-white/95 backdrop-blur-xl rounded-3xl p-8 border-2 transition-all cursor-pointer ${
+                        index === 0 
+                          ? 'border-yellow-400 shadow-2xl shadow-yellow-500/20 lg:scale-105' 
+                          : 'border-white/50 shadow-xl hover:border-turquoise/50'
+                      }`}
                       variants={scaleIn}
-                      transition={{ delay: index * 0.1 }}
-                      whileHover={{ scale: 1.03, y: -8 }}
+                      transition={{ delay: index * 0.15 }}
+                      whileHover={{ scale: index === 0 ? 1.07 : 1.05, y: -8 }}
                       onClick={() => {
                         setSelectedOffer(offer);
                         setCurrentStep(6);
                       }}
                     >
-                      {/* Badge de match */}
-                      <div className="absolute -top-3 md:-top-4 left-1/2 transform -translate-x-1/2">
-                        <div className="bg-gradient-to-r from-turquoise to-blue-bright text-white px-3 md:px-4 py-1.5 md:py-2 rounded-full text-xs md:text-sm font-bold shadow-lg whitespace-nowrap">
+                      {/* Badge de match - positionné au-dessus de la carte */}
+                      <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-20">
+                        <div className={`${
+                          index === 0
+                            ? 'bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400'
+                            : 'bg-gradient-to-r from-turquoise to-blue-bright'
+                        } text-white px-5 py-2 rounded-full text-sm font-black shadow-xl whitespace-nowrap`}>
+                          {index === 0 && '⭐ '}
                           {offer.matchScore}% de match
+                          {index === 0 && ' ⭐'}
                         </div>
                       </div>
 
+                      {/* Badge "MEILLEUR CHOIX" */}
                       {index === 0 && (
-                        <div className="absolute -top-3 md:-top-4 right-3 md:right-4">
-                          <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-2 md:px-3 py-1 rounded-full text-[10px] md:text-xs font-bold whitespace-nowrap">
-                            ⭐ MEILLEUR CHOIX
+                        <div className="absolute -top-4 -right-4 z-20">
+                          <div className="bg-gradient-to-br from-yellow-500 to-orange-600 text-white px-4 py-2 rounded-full text-xs font-black shadow-2xl rotate-12 whitespace-nowrap border-2 border-yellow-300">
+                            🏆 RECOMMANDÉ
                           </div>
                         </div>
                       )}
                       
+                      {/* Effet de gradient au survol */}
                       <motion.div 
-                        className={`absolute inset-0 bg-gradient-to-br ${offer.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300 rounded-2xl md:rounded-3xl`}
+                        className={`absolute inset-0 bg-gradient-to-br ${offer.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500 rounded-3xl`}
                       />
                       
-                      <div className="relative z-10 text-center">
-                        <div className="text-4xl md:text-5xl mb-3 md:mb-4">{offer.icon}</div>
-                        <h3 className="text-lg md:text-2xl font-bold mb-2 text-gray-900">{offer.name}</h3>
-                        <p className="text-turquoise font-semibold mb-3 md:mb-4 text-sm md:text-base">{offer.tagline}</p>
+                      <div className="relative z-10 flex flex-col h-full">
+                        {/* Icône et titre */}
+                        <div className="text-center mb-6">
+                          <div className="text-6xl mb-4 transform group-hover:scale-110 transition-transform duration-300">{offer.icon}</div>
+                          <h3 className="text-2xl font-black mb-2 text-gray-900 leading-tight">{offer.name}</h3>
+                          <p className="text-turquoise font-bold text-base">{offer.tagline}</p>
+                        </div>
                         
-                        <div className="mb-4 md:mb-6 text-xs md:text-sm text-gray-600">
-                          <div className="flex items-center justify-center gap-2 md:gap-4 flex-wrap">
-                            <span className="whitespace-nowrap">⏱️ {offer.duration}</span>
-                            <span className="hidden sm:inline">•</span>
-                            <span className="whitespace-nowrap">📅 {offer.format}</span>
+                        {/* Infos durée et format */}
+                        <div className="mb-6 p-4 bg-gradient-to-r from-turquoise/5 to-blue-bright/5 rounded-2xl border border-turquoise/10">
+                          <div className="flex items-center justify-center gap-4 text-sm text-gray-700 font-medium">
+                            <span className="flex items-center gap-1.5 whitespace-nowrap">
+                              <span className="text-lg">⏱️</span>
+                              {offer.duration}
+                            </span>
+                            <span className="text-turquoise">•</span>
+                            <span className="flex items-center gap-1.5 whitespace-nowrap">
+                              <span className="text-lg">📅</span>
+                              {offer.format}
+                            </span>
                           </div>
                         </div>
                         
-                        <p className="text-gray-600 mb-4 md:mb-6 text-xs md:text-sm leading-relaxed">{offer.description}</p>
+                        {/* Description */}
+                        <p className="text-gray-600 mb-6 text-sm leading-relaxed text-center min-h-[3rem]">{offer.description}</p>
                         
-                        <div className="space-y-2 md:space-y-3 mb-6 md:mb-8 text-left">
+                        {/* Features - liste alignée */}
+                        <div className="space-y-3 mb-8 flex-grow">
                           {offer.features.slice(0, 3).map((feature, i) => (
-                            <div key={i} className="flex items-start text-xs md:text-sm text-gray-700">
-                              <div className="w-2 h-2 bg-turquoise rounded-full mr-2 md:mr-3 mt-1 flex-shrink-0"></div>
-                              <span className="leading-relaxed">{feature}</span>
+                            <div key={i} className="flex items-start gap-3">
+                              <div className="w-5 h-5 bg-gradient-to-br from-turquoise to-blue-bright rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                              </div>
+                              <span className="text-sm text-gray-700 leading-relaxed">{feature}</span>
                             </div>
                           ))}
                         </div>
                         
+                        {/* Bouton CTA */}
                         <motion.button
-                          className="w-full bg-gradient-to-r from-turquoise to-blue-bright text-white py-3 md:py-4 px-4 md:px-6 rounded-xl md:rounded-2xl font-bold group-hover:shadow-lg text-sm md:text-base"
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
+                          className={`w-full text-white py-4 px-6 rounded-2xl font-bold shadow-lg text-base ${
+                            index === 0
+                              ? 'bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 shadow-orange-500/30'
+                              : 'bg-gradient-to-r from-turquoise to-blue-bright'
+                          }`}
+                          whileHover={{ scale: 1.03, boxShadow: '0 20px 40px rgba(10, 185, 166, 0.3)' }}
+                          whileTap={{ scale: 0.97 }}
                         >
-                          Voir les détails et le prix 🎉
+                          <span className="flex items-center justify-center gap-2">
+                            {index === 0 && '🎯 '}
+                            Voir les détails
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                            </svg>
+                          </span>
                         </motion.button>
                       </div>
                     </motion.div>
@@ -958,148 +997,216 @@ const ImmersiveExperience = () => {
       // Étape 6: Détails de l'offre avec PRIX
       case 6:
         return (
-          <div className="min-h-screen flex items-center justify-center relative bg-gradient-to-br from-green-50 via-white to-turquoise-50 pt-32 md:pt-24 pb-12 md:pb-20">
+          <div className="min-h-screen flex items-center justify-center relative bg-gradient-to-br from-turquoise-50 via-white to-blue-50 pt-32 md:pt-24 pb-12 md:pb-20">
+            {/* Dégradés d'arrière-plan */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+              <div className="absolute top-20 right-10 w-96 h-96 bg-turquoise/10 rounded-full blur-3xl" />
+              <div className="absolute bottom-20 left-10 w-80 h-80 bg-blue-bright/10 rounded-full blur-3xl" />
+            </div>
+
             <motion.div 
               className="container mx-auto px-4 md:px-6 lg:px-8 relative z-10"
               initial="hidden"
               animate="visible"
               variants={staggerChildren}
             >
-              <div className="text-center max-w-6xl mx-auto space-y-6 md:space-y-8">
-                <motion.div variants={fadeInUp}>
-                  <div className="inline-flex items-center bg-green-100 text-green-800 px-4 md:px-6 py-2 md:py-3 rounded-full font-semibold text-sm md:text-lg shadow-lg">
-                    🎉 Excellent choix !
+              <div className="text-center max-w-7xl mx-auto space-y-6 md:space-y-10">
+                <motion.div variants={fadeInUp} className="space-y-4">
+                  <div className="inline-flex items-center bg-gradient-to-r from-green-500 to-turquoise text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-bold text-base md:text-xl shadow-2xl">
+                    <span className="text-2xl mr-2">🎉</span>
+                    Excellent choix !
                   </div>
                 </motion.div>
 
-                <motion.h2 
-                  variants={fadeInUp}
-                  className="text-3xl md:text-5xl lg:text-7xl font-black leading-tight px-4"
-                >
-                  <span className="bg-gradient-to-r from-green-600 to-turquoise bg-clip-text text-transparent">
-                    {selectedOffer?.name}
-                  </span>
-                </motion.h2>
+                <motion.div variants={fadeInUp} className="space-y-4">
+                  <div className="text-5xl md:text-7xl mb-4">{selectedOffer?.icon}</div>
+                  <h2 className="text-3xl md:text-5xl lg:text-7xl font-black leading-tight px-4">
+                    <span className="bg-gradient-to-r from-turquoise via-blue-bright to-purple-600 bg-clip-text text-transparent">
+                      {selectedOffer?.name}
+                    </span>
+                  </h2>
+                  <p className="text-xl md:text-2xl text-turquoise font-bold">{selectedOffer?.tagline}</p>
+                </motion.div>
 
                 <motion.div 
                   variants={fadeInUp}
-                  className="grid lg:grid-cols-2 gap-8 md:gap-12 items-start max-w-7xl mx-auto"
+                  className="grid lg:grid-cols-5 gap-8 md:gap-10 items-start max-w-7xl mx-auto"
                 >
-                  {/* Colonne gauche : Détails de l'offre */}
-                  <div className="bg-white/90 backdrop-blur-xl rounded-2xl md:rounded-3xl p-6 md:p-8 border border-white/60 shadow-2xl text-left">
-                    <div className="flex items-center justify-between mb-6">
-                      <div className="text-4xl md:text-5xl">{selectedOffer?.icon}</div>
-                      <div className="text-right">
-                        <div className="text-2xl md:text-4xl font-black text-turquoise">{selectedOffer?.price}</div>
-                        <div className="text-xs md:text-sm text-gray-500 mt-1">par mois</div>
+                  {/* Colonne gauche : Détails de l'offre (3/5) */}
+                  <div className="lg:col-span-3 bg-white/95 backdrop-blur-xl rounded-3xl p-8 md:p-10 border-2 border-turquoise/20 shadow-2xl text-left">
+                    {/* Prix en vedette */}
+                    <div className="mb-8 p-6 bg-gradient-to-br from-turquoise/10 via-blue-bright/10 to-purple-500/10 rounded-2xl border-2 border-turquoise/30 text-center">
+                      <div className="text-sm text-gray-600 mb-2 font-medium uppercase tracking-wide">Tarif mensuel</div>
+                      <div className="text-5xl md:text-6xl font-black bg-gradient-to-r from-turquoise to-blue-bright bg-clip-text text-transparent mb-2">
+                        {selectedOffer?.price}
+                      </div>
+                      <div className="text-sm text-gray-500 font-medium">Paiement flexible disponible</div>
+                    </div>
+
+                    <p className="text-gray-600 mb-8 text-base md:text-lg leading-relaxed text-center">{selectedOffer?.description}</p>
+
+                    {/* Infos durée et format */}
+                    <div className="mb-8 grid grid-cols-2 gap-4">
+                      <div className="p-4 bg-gradient-to-br from-turquoise/5 to-transparent rounded-2xl border border-turquoise/10 text-center">
+                        <div className="text-3xl mb-2">⏱️</div>
+                        <div className="text-sm font-bold text-gray-900 mb-1">Durée</div>
+                        <div className="text-xs text-gray-600">{selectedOffer?.duration}</div>
+                      </div>
+                      <div className="p-4 bg-gradient-to-br from-blue-bright/5 to-transparent rounded-2xl border border-blue-bright/10 text-center">
+                        <div className="text-3xl mb-2">📅</div>
+                        <div className="text-sm font-bold text-gray-900 mb-1">Format</div>
+                        <div className="text-xs text-gray-600">{selectedOffer?.format}</div>
                       </div>
                     </div>
 
-                    <h3 className="text-xl md:text-3xl font-bold mb-2 text-gray-900 leading-tight">{selectedOffer?.tagline}</h3>
-                    <p className="text-gray-600 mb-6 text-sm md:text-lg leading-relaxed">{selectedOffer?.description}</p>
-
-                    <div className="mb-6 p-4 bg-gradient-to-r from-turquoise/10 to-blue-bright/10 rounded-xl md:rounded-2xl border border-turquoise/20">
-                      <div className="grid grid-cols-2 gap-4 text-center">
-                        <div>
-                          <div className="text-xl md:text-2xl font-bold text-gray-900">⏱️</div>
-                          <div className="text-xs md:text-sm text-gray-600">{selectedOffer?.duration}</div>
-                        </div>
-                        <div>
-                          <div className="text-xl md:text-2xl font-bold text-gray-900">📅</div>
-                          <div className="text-xs md:text-sm text-gray-600">{selectedOffer?.format}</div>
-                        </div>
+                    {/* Features */}
+                    <div className="mb-6">
+                      <h4 className="font-black text-xl md:text-2xl mb-6 text-gray-900 flex items-center">
+                        <span className="text-2xl mr-3">✨</span>
+                        Ce que tu vas recevoir
+                      </h4>
+                      <div className="space-y-4">
+                        {selectedOffer?.features.map((feature, i) => (
+                          <motion.div 
+                            key={i} 
+                            className="flex items-start gap-4 p-3 rounded-xl hover:bg-turquoise/5 transition-colors"
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: i * 0.1 }}
+                          >
+                            <div className="w-7 h-7 bg-gradient-to-br from-turquoise to-blue-bright rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 shadow-lg">
+                              <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path>
+                              </svg>
+                            </div>
+                            <span className="text-sm md:text-base text-gray-700 leading-relaxed font-medium">{feature}</span>
+                          </motion.div>
+                        ))}
                       </div>
-                    </div>
-
-                    <h4 className="font-bold text-lg md:text-xl mb-4 text-gray-900">Ce que tu vas recevoir :</h4>
-                    <div className="space-y-3">
-                      {selectedOffer?.features.map((feature, i) => (
-                        <div key={i} className="flex items-start">
-                          <div className="w-6 h-6 bg-turquoise/10 rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
-                            <span className="text-turquoise text-xs md:text-sm">✓</span>
-                          </div>
-                          <span className="text-sm md:text-base text-gray-700 leading-relaxed">{feature}</span>
-                        </div>
-                      ))}
                     </div>
                   </div>
 
-                  {/* Colonne droite : CTA et garanties */}
-                  <div className="space-y-6">
-                    <div className="bg-gradient-to-br from-turquoise/10 to-blue-bright/10 rounded-2xl md:rounded-3xl p-6 md:p-8 border border-turquoise/20">
-                      <h4 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-gray-900">Pourquoi démarrer maintenant ?</h4>
-                      <div className="space-y-4">
+                  {/* Colonne droite : CTA et garanties (2/5) */}
+                  <div className="lg:col-span-2 space-y-6">
+                    {/* CTA Principal - EN HAUT */}
+                    <motion.div 
+                      className="sticky top-24"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.3 }}
+                    >
+                      <div className="bg-gradient-to-br from-turquoise via-blue-bright to-purple-600 rounded-3xl p-1 shadow-2xl">
+                        <div className="bg-white rounded-[22px] p-6 md:p-8 text-center">
+                          <div className="mb-6">
+                            <div className="inline-flex items-center bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm font-bold mb-4">
+                              <span className="mr-2">🔥</span>
+                              Places limitées ce mois-ci
+                            </div>
+                          </div>
+
+                          <motion.a
+                            href={selectedOffer?.buyLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block w-full bg-gradient-to-r from-turquoise to-blue-bright text-white text-xl md:text-2xl font-black py-5 md:py-6 px-6 rounded-2xl text-center shadow-xl mb-4"
+                            whileHover={{ scale: 1.05, boxShadow: '0 25px 50px rgba(10, 185, 166, 0.4)' }}
+                            whileTap={{ scale: 0.95 }}
+                          >
+                            <span className="flex flex-col items-center gap-2">
+                              <span>🚀 Je commence maintenant</span>
+                              <span className="text-lg font-medium">
+                                Seulement {selectedOffer?.price}
+                              </span>
+                            </span>
+                          </motion.a>
+                          
+                          <motion.button
+                            onClick={() => window.open('https://wa.me/22901624357 41', '_blank')}
+                            className="w-full bg-white border-2 border-turquoise text-turquoise font-bold py-4 px-6 rounded-2xl hover:bg-turquoise hover:text-white transition-all duration-300 text-base mb-4"
+                            whileHover={{ scale: 1.03 }}
+                            whileTap={{ scale: 0.97 }}
+                          >
+                            {'💬 Questions ? WhatsApp direct'}
+                          </motion.button>
+
+                          <button
+                            onClick={() => setCurrentStep(5)}
+                            className="w-full text-gray-600 font-medium py-3 hover:text-turquoise transition-colors text-sm flex items-center justify-center gap-2"
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
+                            </svg>
+                            Voir les autres options
+                          </button>
+                        </div>
+                      </div>
+                    </motion.div>
+
+                    {/* Garanties et avantages */}
+                    <div className="bg-white/95 backdrop-blur-xl rounded-3xl p-6 md:p-8 border-2 border-turquoise/20 shadow-xl">
+                      <h4 className="text-lg md:text-xl font-black mb-6 text-gray-900 text-center">
+                        ✨ Pourquoi tu vas adorer
+                      </h4>
+                      <div className="space-y-5">
                         {[
                           {
                             icon: '⚡',
-                            title: 'Démarrage immédiat',
-                            desc: 'Accès en moins de 5 minutes'
-                          },
-                          {
-                            icon: '✨',
-                            title: 'Satisfaction garantie',
-                            desc: '98% de nos apprenants recommandent'
-                          },
-                          {
-                            icon: '💬',
-                            title: 'Support WhatsApp',
-                            desc: 'Aide quotidienne de notre équipe'
+                            title: 'Accès immédiat',
+                            desc: 'Démarre en moins de 5 min',
+                            color: 'from-yellow-400 to-orange-500'
                           },
                           {
                             icon: '🎯',
-                            title: 'Accompagnement personnalisé',
-                            desc: 'Suivi adapté à ton rythme'
+                            title: 'Suivi personnalisé',
+                            desc: 'Adapté à ton rythme',
+                            color: 'from-turquoise to-blue-bright'
+                          },
+                          {
+                            icon: '💬',
+                            title: 'Support quotidien',
+                            desc: 'Aide via WhatsApp',
+                            color: 'from-green-400 to-emerald-500'
+                          },
+                          {
+                            icon: '✅',
+                            title: '98% satisfaits',
+                            desc: 'Nos apprenants recommandent',
+                            color: 'from-purple-400 to-pink-500'
                           }
                         ].map((item, i) => (
-                          <div key={i} className="flex items-start">
-                            <div className="text-2xl md:text-3xl mr-3 md:mr-4 flex-shrink-0">{item.icon}</div>
-                            <div className="min-w-0">
-                              <div className="font-bold text-sm md:text-base text-gray-900">{item.title}</div>
-                              <div className="text-xs md:text-sm text-gray-600 leading-relaxed">{item.desc}</div>
+                          <motion.div 
+                            key={i} 
+                            className="flex items-start gap-4 p-4 rounded-2xl bg-gradient-to-r from-gray-50 to-transparent hover:from-turquoise/5 transition-all"
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.4 + (i * 0.1) }}
+                          >
+                            <div className={`text-3xl bg-gradient-to-br ${item.color} w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0`}>
+                              {item.icon}
                             </div>
-                          </div>
+                            <div className="min-w-0">
+                              <div className="font-bold text-base text-gray-900 mb-1">{item.title}</div>
+                              <div className="text-sm text-gray-600">{item.desc}</div>
+                            </div>
+                          </motion.div>
                         ))}
                       </div>
                     </div>
 
-                    {/* CTAs */}
-                    <div className="space-y-4">
-                      <motion.a
-                        href={selectedOffer?.buyLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block w-full bg-gradient-to-r from-turquoise to-blue-bright text-white text-lg md:text-2xl font-bold py-4 md:py-6 px-6 md:px-8 rounded-xl md:rounded-2xl text-center shadow-2xl"
-                        whileHover={{ scale: 1.02, y: -2 }}
-                        whileTap={{ scale: 0.98 }}
-                      >
-                        <span className="flex items-center justify-center flex-wrap gap-2">
-                          <span>Je démarre maintenant</span>
-                          <span className="hidden md:inline">-</span>
-                          <span className="font-black">{selectedOffer?.price}</span>
-                        </span>
-                      </motion.a>
-                      
-                      <motion.button
-                        onClick={() => window.open('https://wa.me/22901624357 41', '_blank')}
-                        className="w-full bg-white border-2 border-turquoise text-turquoise font-semibold py-3 md:py-4 px-4 md:px-6 rounded-xl md:rounded-2xl hover:bg-turquoise hover:text-white transition-colors duration-300 text-sm md:text-base"
-                        whileHover={{ scale: 1.01 }}
-                      >
-                        {'💬 J\'ai des questions (WhatsApp)'}
-                      </motion.button>
-
-                      <motion.button
-                        onClick={() => setCurrentStep(5)}
-                        className="w-full text-gray-600 font-medium py-2 md:py-3 hover:text-gray-900 transition-colors text-sm md:text-base"
-                        whileHover={{ scale: 1.01 }}
-                      >
-                        ← Voir les autres options
-                      </motion.button>
-                    </div>
-
-                    <div className="text-center text-xs md:text-sm text-gray-500 space-y-2">
-                      <div>🔒 Paiement sécurisé</div>
-                      <div>⚡ Accès immédiat après paiement</div>
-                      <div>💚 Support francophone dédié</div>
+                    {/* Badges de confiance */}
+                    <div className="text-center text-sm text-gray-600 space-y-3 p-4 bg-gray-50 rounded-2xl">
+                      <div className="flex items-center justify-center gap-2">
+                        <span className="text-green-500 text-lg">🔒</span>
+                        <span className="font-semibold">Paiement 100% sécurisé</span>
+                      </div>
+                      <div className="flex items-center justify-center gap-2">
+                        <span className="text-blue-500 text-lg">✅</span>
+                        <span className="font-semibold">Satisfait ou remboursé 14 jours</span>
+                      </div>
+                      <div className="flex items-center justify-center gap-2">
+                        <span className="text-purple-500 text-lg">🎁</span>
+                        <span className="font-semibold">Support illimité inclus</span>
+                      </div>
                     </div>
                   </div>
                 </motion.div>
