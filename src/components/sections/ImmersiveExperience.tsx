@@ -4,10 +4,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useRef, useEffect } from 'react';
 
 interface UserProfile {
-  name?: string;
   goal?: 'student' | 'career_boost' | 'career_change' | 'pro_team';
   availability?: 'full_time' | 'part_time' | 'weekends' | 'flexible';
-  preference?: 'group' | 'individual' | 'intensive' | 'mentoring';
+  preference?: 'express' | 'light' | 'pro';
   commitment?: 'short' | 'medium' | 'long';
 }
 
@@ -21,9 +20,12 @@ interface RealOffer {
   format: string;
   features: string[];
   price: string;
+  priceNote: string;
   buyLink: string;
   color: string;
+  badge?: string;
   bestFor: string[];
+  useCases: string[];
   matchScore?: number;
 }
 
@@ -36,166 +38,88 @@ const ImmersiveExperience = () => {
   const [typedText, setTypedText] = useState('');
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Toutes les vraies offres du site helpallskills.com
+  // 3 offres claires et focalisées — configurables depuis Payload CMS
   const realOffers: RealOffer[] = [
     {
       id: 'coaching-express',
       name: '⚡ Coaching Express',
-      tagline: 'Un coup de boost immédiat',
-      description: 'Résolution rapide d\'un problème ou conseil ciblé pour débloquer ta situation.',
+      tagline: 'Un blocage résolu en 1 heure',
+      description:
+        "Tu as un bug précis, une question technique, une revue de code ou une préparation rapide à un entretien. Tu réserves un créneau, on règle ça ensemble, tu repartes débloqué.",
       icon: '⚡',
-      duration: '1 heure',
+      duration: '1h',
       format: 'Session unique',
       features: [
-        'Session unique de 1 heure',
-        'Conseil ciblé et personnalisé',
-        'Plan d\'action immédiat',
-        'Résolution rapide de problèmes'
+        'Session visio individuelle de 1h',
+        'Résolution d\'un blocage technique précis',
+        'Récapitulatif envoyé sur WhatsApp sous 24h',
+        'Revue de code, concept ou préparation entretien',
+        'Aide sur projet personnel ou professionnel',
       ],
-      price: '15 000 FCFA',
-      buyLink: 'https://helpallskills.com/#coaching',
-      color: 'from-yellow-400 via-orange-500 to-red-500',
-      bestFor: ['student', 'career_boost', 'career_change']
+      price: '5 000 FCFA',
+      priceNote: 'Session unique · Paiement sécurisé via Chariow',
+      buyLink: 'https://chariow.com/helpallskills/coaching-express',
+      color: 'from-amber-400 via-orange-500 to-red-500',
+      badge: "Offre d'entrée",
+      bestFor: ['student', 'career_boost', 'career_change', 'pro_team'],
+      useCases: ['Débloquer un bug', 'Revue de code', 'Comprendre un concept', 'Préparer un entretien', 'Aide projet perso'],
     },
     {
-      id: 'formation-privee',
-      name: '👨‍🏫 Formation Privée 1-to-1',
-      tagline: 'Suivi personnalisé à ton rythme',
-      description: 'Suivi personnalisé et rythme flexible adapté à tes objectifs spécifiques.',
-      icon: '👨‍🏫',
-      duration: 'Par mois',
-      format: '3 séances/semaine',
+      id: 'mentorat-light',
+      name: '📈 Mentorat Light',
+      tagline: 'Progresse régulièrement, sans pression',
+      description:
+        "Un accompagnement léger mais structuré. Tu gardes le même coach dédié chaque mois et tu avances à un rythme régulier. Support WhatsApp disponible entre les sessions.",
+      icon: '📈',
+      duration: '2 × 1h30 / mois',
+      format: 'Abonnement mensuel',
       features: [
-        '3 séances individuelles par semaine',
-        'Suivi personnalisé continu',
-        'Rythme flexible',
-        'Accompagnement sur mesure'
+        '2 sessions de 1h30 par mois',
+        'Même coach dédié tous les mois',
+        'Support WhatsApp asynchrone (réponse sous 48h ouvrées)',
+        'Le support WhatsApp ne remplace pas les sessions en direct',
+        'Places limitées par coach — qualité garantie',
       ],
-      price: '75 000 FCFA',
-      buyLink: 'https://helpallskills.com/#coaching',
-      color: 'from-blue-500 via-indigo-600 to-purple-600',
-      bestFor: ['student', 'career_boost']
+      price: '13 500 FCFA',
+      priceNote: 'Par mois · Sans engagement minimum',
+      buyLink: 'https://chariow.com/helpallskills/mentorat-light',
+      color: 'from-blue-500 via-indigo-500 to-purple-500',
+      badge: 'Le plus accessible',
+      bestFor: ['student', 'career_boost'],
+      useCases: ['Montée en compétences', 'Suivi mensuel régulier', 'Questions entre sessions', 'Progression structurée'],
     },
     {
-      id: 'formation-groupe',
-      name: '👥 Formation en Groupe',
-      tagline: 'Apprends avec une communauté',
-      description: 'Programme intensif de 3 mois avec 9h/semaine en groupe de 10 personnes maximum.',
-      icon: '👥',
-      duration: '3 mois',
-      format: 'Groupe de 10 max',
-      features: [
-        '3 séances par semaine',
-        '9h de formation/semaine',
-        'Groupe de 10 personnes max',
-        'Modalités de paiement flexibles'
-      ],
-      price: '150 000 FCFA',
-      buyLink: 'https://helpallskills.com/#coaching',
-      color: 'from-green-400 via-teal-500 to-blue-500',
-      bestFor: ['student', 'career_change']
-    },
-    {
-      id: 'bootcamp-semaine',
-      name: '🚀 Bootcamp Format Semaine',
-      tagline: 'Intensif et immersif 5j/7',
-      description: 'Formation intensive de 5 jours par semaine pour une montée en compétences rapide et complète.',
+      id: 'mentorat-pro',
+      name: '🚀 Mentorat Pro',
+      tagline: 'Accompagnement intensif avec roadmap',
+      description:
+        "Pour ceux qui veulent aller vite et loin. Préparation d'entretiens techniques, coaching carrière, suivi de projet freelance ou emploi. Ton coach te fournit une roadmap PDF personnalisée dès le départ.",
       icon: '🚀',
-      duration: '3 mois',
-      format: 'Lun-Ven, 3h/jour',
+      duration: '4 × 1h30 / mois',
+      format: 'Abonnement mensuel',
       features: [
-        'Formation intensive 5j/7',
-        '15h de cours par semaine',
-        'Projets pratiques quotidiens',
-        'Mentoring individuel inclus'
+        '4 sessions de 1h30 par mois',
+        'Coach senior dédié',
+        'Support WhatsApp prioritaire (réponse sous 24h ouvrées)',
+        'Roadmap PDF personnalisée fournie par ton coach',
+        'Places très limitées — max 5 mentorés actifs par coach',
+        'Le support WhatsApp ne remplace pas les sessions en direct',
       ],
-      price: '220 000 - 250 000 FCFA',
-      buyLink: 'https://helpallskills.com/#bootcamps',
-      color: 'from-purple-500 via-pink-500 to-red-500',
-      bestFor: ['career_change']
+      price: '25 000 FCFA',
+      priceNote: 'Par mois · Sans engagement minimum',
+      buyLink: 'https://chariow.com/helpallskills/mentorat-pro',
+      color: 'from-violet-600 via-purple-600 to-pink-600',
+      badge: '⭐ Premium',
+      bestFor: ['career_change', 'career_boost', 'pro_team'],
+      useCases: ['Prépa entretiens tech', 'Coaching carrière', 'Suivi projet freelance', 'Accélération compétences'],
     },
-    {
-      id: 'bootcamp-weekend',
-      name: '🏃‍♂️ Bootcamp Format Week-end',
-      tagline: 'Modulaire et flexible',
-      description: 'Formation modulaire sur 3 jours par semaine, parfaite pour concilier travail et formation.',
-      icon: '🏃‍♂️',
-      duration: '3 mois',
-      format: 'Ven-Sam-Dim, 3h/séance',
-      features: [
-        'Formation 3j/semaine',
-        '9h de cours par semaine',
-        'Flexibilité horaire',
-        'Projets en équipe'
-      ],
-      price: '180 000 - 200 000 FCFA',
-      buyLink: 'https://helpallskills.com/#bootcamps',
-      color: 'from-cyan-500 via-blue-500 to-indigo-600',
-      bestFor: ['career_boost', 'career_change']
-    },
-    {
-      id: 'mentorat-standard',
-      name: '🤝 Mentorat Standard',
-      tagline: 'Accompagnement intensif',
-      description: 'Un accompagnement sur mesure pour développer tes compétences techniques et construire une stratégie de carrière solide.',
-      icon: '🤝',
-      duration: '3-6 mois',
-      format: '1 séance 1h30/semaine',
-      features: [
-        '1 séance de 1h30 par semaine',
-        'Mentor expérimenté dédié',
-        'Support WhatsApp inclus',
-        'Suivi personnalisé continu'
-      ],
-      price: '75 000 FCFA',
-      buyLink: 'https://helpallskills.com/#mentorat',
-      color: 'from-emerald-400 via-green-500 to-teal-600',
-      bestFor: ['career_boost', 'career_change']
-    },
-    {
-      id: 'mentorat-leger',
-      name: '💼 Mentorat Léger',
-      tagline: 'Option flexible',
-      description: 'Parfait pour ceux qui ont un rythme moins soutenu ou un budget plus serré tout en gardant un accompagnement de qualité.',
-      icon: '💼',
-      duration: 'Flexible',
-      format: '1 séance 1h30/2 semaines',
-      features: [
-        '1 séance toutes les 2 semaines',
-        'Mentor expérimenté',
-        'Support entre séances',
-        'Rythme adapté à tes contraintes'
-      ],
-      price: '40 000 FCFA',
-      buyLink: 'https://helpallskills.com/#mentorat',
-      color: 'from-blue-400 via-cyan-500 to-teal-500',
-      bestFor: ['student', 'career_boost']
-    },
-    {
-      id: 'workshop',
-      name: '🛠 Workshop Particuliers',
-      tagline: 'Formations thématiques spécialisées',
-      description: 'Workshops spécialisés de 4-6 semaines pour approfondir des compétences spécifiques.',
-      icon: '🛠',
-      duration: '4-6 semaines',
-      format: '2 séances/semaine',
-      features: [
-        'Thématiques spécifiques',
-        '2 séances par semaine',
-        'Durée de 4 à 6 semaines',
-        'Pratique intensive'
-      ],
-      price: '60 000 - 90 000 FCFA',
-      buyLink: 'https://helpallskills.com/#formations',
-      color: 'from-orange-400 via-red-500 to-pink-500',
-      bestFor: ['student', 'career_boost']
-    }
   ];
 
-  // Animation d'écriture
+  // Animation d'écriture à l'accueil
   useEffect(() => {
     if (currentStep === 0) {
-      const text = "Salut ! 👋 Je suis ton guide HelpAll Skills. Je vais t'aider à trouver l'accompagnement parfait pour ta carrière tech.";
+      const text =
+        "Salut ! 👋 Je suis ton guide HelpAll Skills. En 4 questions, je t'aide à trouver l'accompagnement tech qui te correspond vraiment.";
       let index = 0;
       const timer = setInterval(() => {
         setTypedText(text.slice(0, index));
@@ -203,104 +127,127 @@ const ImmersiveExperience = () => {
         if (index > text.length) {
           clearInterval(timer);
         }
-      }, 40);
+      }, 38);
       return () => clearInterval(timer);
     }
   }, [currentStep]);
 
-  // Recalculer les recommandations quand on arrive à l'étape 5 (après navigation arrière)
+  // Recalculer les recommandations quand on revient à l'étape 5
   useEffect(() => {
-    if (currentStep === 5 && userProfile.goal && userProfile.availability && userProfile.preference && userProfile.commitment) {
+    if (
+      currentStep === 5 &&
+      userProfile.goal &&
+      userProfile.availability &&
+      userProfile.preference &&
+      userProfile.commitment
+    ) {
       const recommendations = generateRecommendations(userProfile);
       setRecommendedOffers(recommendations);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentStep, userProfile]);
 
-  // Système de recommandation intelligent
+  // Système de recommandation — 3 offres
   const generateRecommendations = (profile: UserProfile) => {
-    const offers = realOffers.map(offer => {
+    const offers = realOffers.map((offer) => {
       let score = 0;
-      
+
       // Score basé sur l'objectif
       if (profile.goal && offer.bestFor.includes(profile.goal)) {
-        score += 40;
+        score += 30;
       }
-      
+
       // Score basé sur la disponibilité
-      if (profile.availability === 'full_time' && offer.id.includes('bootcamp-semaine')) score += 30;
-      if (profile.availability === 'weekends' && offer.id.includes('bootcamp-weekend')) score += 30;
-      if (profile.availability === 'part_time' && offer.format.includes('semaine')) score += 25;
-      if (profile.availability === 'flexible' && offer.id.includes('leger')) score += 25;
-      
-      // Score basé sur la préférence
-      if (profile.preference === 'group' && offer.id.includes('groupe')) score += 35;
-      if (profile.preference === 'individual' && offer.id.includes('privee')) score += 35;
-      if (profile.preference === 'intensive' && offer.id.includes('bootcamp')) score += 35;
-      if (profile.preference === 'mentoring' && offer.id.includes('mentorat')) score += 35;
-      
+      if (profile.availability === 'flexible' && offer.id === 'coaching-express') score += 20;
+      if (profile.availability === 'part_time' && offer.id === 'mentorat-light') score += 25;
+      if (profile.availability === 'weekends' && offer.id === 'mentorat-light') score += 20;
+      if (profile.availability === 'full_time' && offer.id === 'mentorat-pro') score += 25;
+
+      // Score direct basé sur la préférence (correspond 1-to-1 aux offres)
+      if (profile.preference === 'express' && offer.id === 'coaching-express') score += 50;
+      if (profile.preference === 'light' && offer.id === 'mentorat-light') score += 50;
+      if (profile.preference === 'pro' && offer.id === 'mentorat-pro') score += 50;
+
       // Score basé sur l'engagement
-      if (profile.commitment === 'short' && offer.id === 'coaching-express') score += 30;
-      if (profile.commitment === 'medium' && (offer.id.includes('formation') || offer.id.includes('workshop'))) score += 25;
-      if (profile.commitment === 'long' && (offer.id.includes('bootcamp') || offer.id.includes('mentorat'))) score += 30;
-      
-      return { ...offer, matchScore: score };
+      if (profile.commitment === 'short' && offer.id === 'coaching-express') score += 35;
+      if (profile.commitment === 'medium' && offer.id === 'mentorat-light') score += 30;
+      if (profile.commitment === 'long' && offer.id === 'mentorat-pro') score += 35;
+
+      return { ...offer, matchScore: Math.min(score, 99) };
     });
-    
-    // Trier par score et prendre les 3 meilleurs
-    const sorted = offers.sort((a, b) => (b.matchScore || 0) - (a.matchScore || 0));
-    return sorted.slice(0, 3);
+
+    return offers.sort((a, b) => (b.matchScore || 0) - (a.matchScore || 0));
   };
 
   const fadeInUp = {
     hidden: { opacity: 0, y: 40 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
-      transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] }
-    }
+      transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+    },
   };
 
   const staggerChildren = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.2
-      }
-    }
+      transition: { staggerChildren: 0.15, delayChildren: 0.2 },
+    },
   };
 
   const scaleIn = {
     hidden: { scale: 0.9, opacity: 0 },
-    visible: { 
-      scale: 1, 
+    visible: {
+      scale: 1,
       opacity: 1,
-      transition: { duration: 0.5, ease: "easeOut" }
-    }
+      transition: { duration: 0.5, ease: 'easeOut' },
+    },
   };
+
+  const ProgressBar = ({ step }: { step: number }) => (
+    <div className="w-full max-w-xs mx-auto bg-gray-200 rounded-full h-2 overflow-hidden">
+      <motion.div
+        className="h-full bg-gradient-to-r from-turquoise to-blue-bright rounded-full"
+        initial={{ width: 0 }}
+        animate={{ width: `${(step / 4) * 100}%` }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
+      />
+    </div>
+  );
 
   const renderStep = () => {
     switch (currentStep) {
-      // Étape 0: Accueil chaleureux
+      // ──────────────────────────────────────────
+      // Étape 0 : Accueil avec aperçu des 3 offres
+      // ──────────────────────────────────────────
       case 0:
         return (
           <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 pt-24 md:pt-0">
-            {/* Dégradé de fond subtil */}
             <div className="absolute inset-0 pointer-events-none">
               <div className="absolute top-20 right-10 w-96 h-96 bg-turquoise/10 rounded-full blur-3xl" />
               <div className="absolute bottom-20 left-10 w-80 h-80 bg-blue-bright/10 rounded-full blur-3xl" />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-purple-600/5 rounded-full blur-3xl" />
             </div>
 
-            <motion.div 
+            <motion.div
               className="container mx-auto px-4 md:px-6 lg:px-8 relative z-10 py-12 md:py-20"
               initial="hidden"
               animate="visible"
               variants={staggerChildren}
             >
-              <div className="text-center max-w-4xl mx-auto space-y-8 md:space-y-12">
-                <motion.h1 
+              <div className="text-center max-w-4xl mx-auto space-y-8 md:space-y-10">
+                {/* Badge pays */}
+                <motion.div
+                  variants={fadeInUp}
+                  className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-xl px-5 py-2.5 rounded-full border border-white/20"
+                >
+                  <span className="text-xl">🇧🇯</span>
+                  <span className="text-white/90 text-sm font-semibold">Coaching Tech · Afrique francophone</span>
+                </motion.div>
+
+                {/* Titre principal */}
+                <motion.h1
                   variants={fadeInUp}
                   className="text-4xl md:text-6xl lg:text-8xl font-black leading-tight"
                 >
@@ -312,44 +259,64 @@ const ImmersiveExperience = () => {
                   </span>
                 </motion.h1>
 
-                <motion.div 
-                  variants={fadeInUp}
-                >
+                {/* Message animé */}
+                <motion.div variants={fadeInUp}>
                   <div className="bg-white/5 backdrop-blur-2xl rounded-2xl md:rounded-3xl p-6 md:p-10 border border-white/10 shadow-2xl">
-                    <div className="text-lg md:text-2xl lg:text-3xl font-medium text-white/90 mb-4 min-h-[5rem] md:min-h-[6rem] flex items-center justify-center">
+                    <div className="text-lg md:text-2xl font-medium text-white/90 mb-3 min-h-[4rem] md:min-h-[5rem] flex items-center justify-center">
                       <span className="text-center leading-relaxed">
                         {typedText}
                         <motion.span
                           animate={{ opacity: [1, 0, 1] }}
                           transition={{ duration: 1, repeat: Infinity }}
-                          className="inline-block w-0.5 md:w-1 h-6 md:h-8 bg-turquoise ml-2"
+                          className="inline-block w-0.5 md:w-1 h-5 md:h-7 bg-turquoise ml-1"
                         />
                       </span>
                     </div>
-                    
-                    <div className="text-white/70 text-base md:text-lg">
-                      Prêt à découvrir ton parcours idéal ? 🚀
+                    <div className="text-white/50 text-sm">
+                      3 offres claires · Paiement sécurisé via Chariow · Coachs dédiés
                     </div>
                   </div>
                 </motion.div>
 
+                {/* Aperçu des 3 offres */}
+                <motion.div variants={fadeInUp} className="grid grid-cols-3 gap-3 md:gap-4">
+                  {[
+                    { icon: '⚡', name: 'Coaching Express', price: '5 000 FCFA', sub: 'session unique' },
+                    { icon: '📈', name: 'Mentorat Light', price: '13 500 FCFA', sub: '/ mois' },
+                    { icon: '🚀', name: 'Mentorat Pro', price: '25 000 FCFA', sub: '/ mois' },
+                  ].map((o, i) => (
+                    <motion.div
+                      key={i}
+                      className="bg-white/5 hover:bg-white/10 backdrop-blur-xl rounded-xl md:rounded-2xl p-3 md:p-5 border border-white/10 hover:border-turquoise/30 text-center transition-all duration-300 cursor-default"
+                      whileHover={{ y: -3 }}
+                    >
+                      <div className="text-2xl md:text-3xl mb-2">{o.icon}</div>
+                      <div className="text-white text-xs md:text-sm font-bold mb-1 leading-tight">{o.name}</div>
+                      <div className="text-turquoise font-black text-sm md:text-lg">{o.price}</div>
+                      <div className="text-white/40 text-xs">{o.sub}</div>
+                    </motion.div>
+                  ))}
+                </motion.div>
+
+                {/* CTA */}
                 <motion.div variants={fadeInUp} className="space-y-4">
                   <motion.button
+                    id="start-quiz-btn"
                     onClick={() => setCurrentStep(1)}
                     className="bg-gradient-to-r from-turquoise to-blue-bright text-white text-lg md:text-2xl font-bold px-8 md:px-12 py-4 md:py-6 rounded-2xl shadow-2xl group inline-flex items-center justify-center"
                     whileHover={{ scale: 1.05, y: -3 }}
                     whileTap={{ scale: 0.95 }}
                   >
                     <span className="flex items-center">
-                      {'C\'est parti ! 🎯'}
-                      <motion.svg 
-                        xmlns="http://www.w3.org/2000/svg" 
-                        width="24" 
-                        height="24" 
-                        viewBox="0 0 24 24" 
-                        fill="none" 
-                        stroke="currentColor" 
-                        strokeWidth="2" 
+                      {"Trouver mon accompagnement 🎯"}
+                      <motion.svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
                         className="ml-3 md:ml-4 group-hover:translate-x-2 transition-transform"
                       >
                         <path d="M5 12h14"></path>
@@ -357,8 +324,8 @@ const ImmersiveExperience = () => {
                       </motion.svg>
                     </span>
                   </motion.button>
-                  <p className="text-white/60 text-sm md:text-base">
-                    ⏱️ 3 minutes pour trouver ton accompagnement parfait
+                  <p className="text-white/40 text-sm">
+                    ⏱️ 2 minutes · 4 questions · Résultat personnalisé
                   </p>
                 </motion.div>
               </div>
@@ -366,46 +333,47 @@ const ImmersiveExperience = () => {
           </div>
         );
 
-      // Étape 1: Quel est ton objectif ?
+      // ──────────────────────────────────────────
+      // Étape 1 : Objectif
+      // ──────────────────────────────────────────
       case 1:
         return (
           <div className="min-h-screen flex items-center justify-center relative bg-gradient-to-br from-blue-50 via-white to-turquoise-50 pt-32 md:pt-24 pb-12">
-            <motion.div 
+            <motion.div
               className="container mx-auto px-4 md:px-6 lg:px-8 relative z-10"
               initial="hidden"
               animate="visible"
               variants={staggerChildren}
             >
-              <div className="text-center max-w-6xl mx-auto space-y-8 md:space-y-12">
+              <div className="text-center max-w-6xl mx-auto space-y-6 md:space-y-10">
                 <motion.div variants={fadeInUp} className="flex items-center justify-center gap-4">
                   <motion.button
                     onClick={() => setCurrentStep(0)}
-                    className="text-gray-600 hover:text-gray-900 transition-colors font-medium text-sm md:text-base"
+                    className="text-gray-500 hover:text-gray-900 transition-colors font-medium text-sm"
                     whileHover={{ scale: 1.05, x: -2 }}
                     whileTap={{ scale: 0.95 }}
                   >
                     ← Retour
                   </motion.button>
-                  <div className="inline-flex items-center bg-white/80 backdrop-blur-lg px-4 md:px-6 py-2 md:py-3 rounded-full border border-turquoise/20 shadow-lg">
-                    <span className="text-xs md:text-sm font-medium text-gray-700">Question 1/4 · Ton objectif</span>
+                  <div className="inline-flex items-center bg-white/80 backdrop-blur-lg px-4 py-2 rounded-full border border-turquoise/20 shadow-lg">
+                    <span className="text-xs font-semibold text-gray-600">Question 1 / 4 · Objectif</span>
                   </div>
                 </motion.div>
 
-                <motion.h2 
+                <ProgressBar step={1} />
+
+                <motion.h2
                   variants={fadeInUp}
                   className="text-3xl md:text-5xl lg:text-7xl font-black text-gray-900 leading-tight px-4"
                 >
-                  Quel est ton objectif principal ? 🎯
+                  Quel est ton objectif ? 🎯
                 </motion.h2>
 
-                <motion.p 
-                  variants={fadeInUp}
-                  className="text-base md:text-xl text-gray-600 max-w-2xl mx-auto px-4"
-                >
-                  {'Dis-moi ce que tu cherches, je vais t\'orienter vers le meilleur accompagnement'}
+                <motion.p variants={fadeInUp} className="text-base md:text-xl text-gray-500 max-w-2xl mx-auto px-4">
+                  Dis-moi ce que tu cherches à accomplir
                 </motion.p>
 
-                <motion.div 
+                <motion.div
                   variants={fadeInUp}
                   className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6"
                 >
@@ -413,36 +381,37 @@ const ImmersiveExperience = () => {
                     {
                       id: 'student',
                       icon: '🎓',
-                      title: 'Étudiant',
-                      description: 'Je veux apprendre les bases et progresser',
-                      color: 'from-green-400 to-emerald-500'
+                      title: 'Apprendre & progresser',
+                      description: 'Je veux monter en compétences dans la tech',
+                      color: 'from-green-400 to-emerald-500',
                     },
                     {
                       id: 'career_boost',
                       icon: '🚀',
                       title: 'Booster ma carrière',
-                      description: 'Je suis déjà en poste, je veux évoluer',
-                      color: 'from-blue-500 to-turquoise'
+                      description: 'Je suis dev, je veux évoluer ou trouver mieux',
+                      color: 'from-blue-500 to-turquoise',
                     },
                     {
                       id: 'career_change',
                       icon: '🔄',
-                      title: 'Reconversion',
-                      description: 'Je veux changer de domaine vers la tech',
-                      color: 'from-purple-500 to-pink-500'
+                      title: 'Me reconvertir',
+                      description: 'Je veux entrer dans la tech ou changer de stack',
+                      color: 'from-purple-500 to-pink-500',
                     },
                     {
                       id: 'pro_team',
-                      icon: '👥',
-                      title: 'Former mon équipe',
-                      description: 'Je cherche une formation pour mon entreprise',
-                      color: 'from-orange-500 to-red-500'
-                    }
+                      icon: '💼',
+                      title: 'Décrocher un emploi',
+                      description: "Je prépare des entretiens ou cherche du freelance",
+                      color: 'from-orange-500 to-red-500',
+                    },
                   ].map((option) => (
                     <motion.button
+                      id={`goal-${option.id}`}
                       key={option.id}
                       onClick={() => {
-                        setUserProfile(prev => ({ ...prev, goal: option.id as UserProfile['goal'] }));
+                        setUserProfile((prev) => ({ ...prev, goal: option.id as UserProfile['goal'] }));
                         setCurrentStep(2);
                       }}
                       className="group bg-white/90 backdrop-blur-xl rounded-2xl md:rounded-3xl p-6 md:p-8 border border-gray-200/50 shadow-lg hover:shadow-2xl transition-all text-center"
@@ -450,13 +419,13 @@ const ImmersiveExperience = () => {
                       whileHover={{ scale: 1.03, y: -5 }}
                       whileTap={{ scale: 0.98 }}
                     >
-                      <motion.div 
+                      <div
                         className={`text-4xl md:text-5xl mb-3 md:mb-4 p-3 md:p-4 bg-gradient-to-br ${option.color} rounded-xl md:rounded-2xl inline-block`}
                       >
                         {option.icon}
-                      </motion.div>
+                      </div>
                       <h3 className="text-lg md:text-xl font-bold mb-2 text-gray-900">{option.title}</h3>
-                      <p className="text-gray-600 text-xs md:text-sm leading-relaxed">{option.description}</p>
+                      <p className="text-gray-500 text-xs md:text-sm leading-relaxed">{option.description}</p>
                     </motion.button>
                   ))}
                 </motion.div>
@@ -465,83 +434,82 @@ const ImmersiveExperience = () => {
           </div>
         );
 
-      // Étape 2: Disponibilité
+      // ──────────────────────────────────────────
+      // Étape 2 : Disponibilité
+      // ──────────────────────────────────────────
       case 2:
         return (
           <div className="min-h-screen flex items-center justify-center relative bg-gradient-to-br from-purple-50 via-white to-blue-50 pt-32 md:pt-24 pb-12">
-            <motion.div 
+            <motion.div
               className="container mx-auto px-4 md:px-6 lg:px-8 relative z-10"
               initial="hidden"
               animate="visible"
               variants={staggerChildren}
             >
-              <div className="text-center max-w-5xl mx-auto space-y-8 md:space-y-12">
+              <div className="text-center max-w-5xl mx-auto space-y-6 md:space-y-10">
                 <motion.div variants={fadeInUp} className="flex items-center justify-center gap-4">
                   <motion.button
                     onClick={() => setCurrentStep(1)}
-                    className="text-gray-600 hover:text-gray-900 transition-colors font-medium text-sm md:text-base"
+                    className="text-gray-500 hover:text-gray-900 transition-colors font-medium text-sm"
                     whileHover={{ scale: 1.05, x: -2 }}
                     whileTap={{ scale: 0.95 }}
                   >
                     ← Retour
                   </motion.button>
-                  <div className="inline-flex items-center bg-white/80 backdrop-blur-lg px-4 md:px-6 py-2 md:py-3 rounded-full border border-turquoise/20 shadow-lg">
-                    <span className="text-xs md:text-sm font-medium text-gray-700">Question 2/4 · Ta disponibilité</span>
+                  <div className="inline-flex items-center bg-white/80 backdrop-blur-lg px-4 py-2 rounded-full border border-turquoise/20 shadow-lg">
+                    <span className="text-xs font-semibold text-gray-600">Question 2 / 4 · Disponibilité</span>
                   </div>
                 </motion.div>
 
-                <motion.h2 
+                <ProgressBar step={2} />
+
+                <motion.h2
                   variants={fadeInUp}
                   className="text-3xl md:text-5xl lg:text-7xl font-black text-gray-900 leading-tight px-4"
                 >
-                  Quelle est ta disponibilité ? ⏰
+                  Ta disponibilité ? ⏰
                 </motion.h2>
 
-                <motion.p 
-                  variants={fadeInUp}
-                  className="text-base md:text-xl text-gray-600 max-w-2xl mx-auto px-4"
-                >
-                  {'Ça m\'aide à te proposer le format qui colle parfaitement à ton emploi du temps'}
+                <motion.p variants={fadeInUp} className="text-base md:text-xl text-gray-500 max-w-2xl mx-auto px-4">
+                  {"Ça m'aide à te proposer le format qui colle à ton emploi du temps"}
                 </motion.p>
 
-                <motion.div 
-                  variants={fadeInUp}
-                  className="grid md:grid-cols-2 gap-4 md:gap-6"
-                >
+                <motion.div variants={fadeInUp} className="grid md:grid-cols-2 gap-4 md:gap-6">
                   {[
                     {
                       id: 'full_time',
                       icon: '⚡',
-                      title: 'Temps plein disponible',
-                      description: 'Je peux me consacrer 100% à ma formation (15h/semaine ou plus)',
-                      badge: 'Bootcamp intensif recommandé'
+                      title: 'Temps plein',
+                      description: "Je peux me consacrer intensément à ma progression (15h+/semaine)",
+                      badge: 'Mentorat Pro recommandé',
                     },
                     {
                       id: 'part_time',
                       icon: '🕐',
-                      title: 'Quelques heures/semaine',
-                      description: 'J\'ai 6-9h par semaine à consacrer à ma formation',
-                      badge: 'Formation progressive'
+                      title: 'Quelques heures / semaine',
+                      description: "J'ai 3 à 6h par semaine à y consacrer",
+                      badge: 'Mentorat Light adapté',
                     },
                     {
                       id: 'weekends',
                       icon: '📅',
-                      title: 'Uniquement week-ends',
-                      description: 'Je travaille en semaine, je suis libre le week-end',
-                      badge: 'Format week-end parfait'
+                      title: 'Surtout les week-ends',
+                      description: "Je travaille en semaine, le week-end est pour moi",
+                      badge: 'Sessions flexibles disponibles',
                     },
                     {
                       id: 'flexible',
                       icon: '🔄',
-                      title: 'Rythme flexible',
-                      description: 'Je préfère un rythme souple que je peux adapter',
-                      badge: 'Mentorat léger idéal'
-                    }
+                      title: 'Rythme libre',
+                      description: "Je préfère commencer doucement, sans pression",
+                      badge: 'Coaching Express pour démarrer',
+                    },
                   ].map((option, index) => (
                     <motion.button
+                      id={`avail-${option.id}`}
                       key={option.id}
                       onClick={() => {
-                        setUserProfile(prev => ({ ...prev, availability: option.id as UserProfile['availability'] }));
+                        setUserProfile((prev) => ({ ...prev, availability: option.id as UserProfile['availability'] }));
                         setCurrentStep(3);
                       }}
                       className="group bg-white/90 backdrop-blur-xl rounded-2xl md:rounded-3xl p-6 md:p-8 border border-gray-200/50 shadow-lg hover:shadow-2xl transition-all text-left"
@@ -550,13 +518,13 @@ const ImmersiveExperience = () => {
                       whileHover={{ scale: 1.02, y: -3 }}
                       whileTap={{ scale: 0.98 }}
                     >
-                      <div className="flex items-start gap-3 md:gap-4">
+                      <div className="flex items-start gap-4">
                         <div className="text-3xl md:text-4xl flex-shrink-0">{option.icon}</div>
                         <div className="flex-1 min-w-0">
                           <h3 className="text-lg md:text-2xl font-bold mb-2 text-gray-900">{option.title}</h3>
-                          <p className="text-sm md:text-base text-gray-600 mb-3 md:mb-4 leading-relaxed">{option.description}</p>
-                          <div className="inline-flex items-center bg-gradient-to-r from-turquoise/10 to-blue-bright/10 px-3 md:px-4 py-1.5 md:py-2 rounded-full border border-turquoise/20">
-                            <span className="text-xs md:text-sm font-medium text-turquoise">✨ {option.badge}</span>
+                          <p className="text-sm md:text-base text-gray-500 mb-3 leading-relaxed">{option.description}</p>
+                          <div className="inline-flex items-center bg-gradient-to-r from-turquoise/10 to-blue-bright/10 px-3 py-1.5 rounded-full border border-turquoise/20">
+                            <span className="text-xs font-semibold text-turquoise">✨ {option.badge}</span>
                           </div>
                         </div>
                       </div>
@@ -568,101 +536,110 @@ const ImmersiveExperience = () => {
           </div>
         );
 
-      // Étape 3: Format préféré
+      // ──────────────────────────────────────────
+      // Étape 3 : Type d'accompagnement (direct mapping aux offres)
+      // ──────────────────────────────────────────
       case 3:
         return (
-          <div className="min-h-screen flex items-center justify-center relative bg-gradient-to-br from-turquoise-50 via-white to-blue-50 pt-32 md:pt-24 pb-12">
-            <motion.div 
+          <div className="min-h-screen flex items-center justify-center relative bg-gradient-to-br from-turquoise-50 via-white to-indigo-50 pt-32 md:pt-24 pb-12">
+            <motion.div
               className="container mx-auto px-4 md:px-6 lg:px-8 relative z-10"
               initial="hidden"
               animate="visible"
               variants={staggerChildren}
             >
-              <div className="text-center max-w-5xl mx-auto space-y-8 md:space-y-12">
+              <div className="text-center max-w-5xl mx-auto space-y-6 md:space-y-10">
                 <motion.div variants={fadeInUp} className="flex items-center justify-center gap-4">
                   <motion.button
                     onClick={() => setCurrentStep(2)}
-                    className="text-gray-600 hover:text-gray-900 transition-colors font-medium text-sm md:text-base"
+                    className="text-gray-500 hover:text-gray-900 transition-colors font-medium text-sm"
                     whileHover={{ scale: 1.05, x: -2 }}
                     whileTap={{ scale: 0.95 }}
                   >
                     ← Retour
                   </motion.button>
-                  <div className="inline-flex items-center bg-white/80 backdrop-blur-lg px-4 md:px-6 py-2 md:py-3 rounded-full border border-turquoise/20 shadow-lg">
-                    <span className="text-xs md:text-sm font-medium text-gray-700">Question 3/4 · Ton format préféré</span>
+                  <div className="inline-flex items-center bg-white/80 backdrop-blur-lg px-4 py-2 rounded-full border border-turquoise/20 shadow-lg">
+                    <span className="text-xs font-semibold text-gray-600">Question 3 / 4 · Type d&apos;accompagnement</span>
                   </div>
                 </motion.div>
 
-                <motion.h2 
+                <ProgressBar step={3} />
+
+                <motion.h2
                   variants={fadeInUp}
-                  className="text-3xl md:text-5xl lg:text-7xl font-black text-gray-900 leading-tight px-4"
+                  className="text-3xl md:text-5xl lg:text-6xl font-black text-gray-900 leading-tight px-4"
                 >
-                  Comment préfères-tu apprendre ? 📚
+                  Tu as plutôt besoin de... 🤔
                 </motion.h2>
 
-                <motion.p 
-                  variants={fadeInUp}
-                  className="text-base md:text-xl text-gray-600 max-w-2xl mx-auto px-4"
-                >
-                  Chaque personne apprend différemment. Dis-moi ce qui te correspond le mieux
+                <motion.p variants={fadeInUp} className="text-base md:text-xl text-gray-500 max-w-2xl mx-auto px-4">
+                  Choisis ce qui te ressemble le plus — les prix sont affichés pour te donner une idée
                 </motion.p>
 
-                <motion.div 
-                  variants={fadeInUp}
-                  className="grid md:grid-cols-2 gap-4 md:gap-6"
-                >
+                <motion.div variants={fadeInUp} className="grid md:grid-cols-3 gap-4 md:gap-6">
                   {[
                     {
-                      id: 'group',
-                      icon: '👥',
-                      title: 'En groupe',
-                      description: 'J\'aime apprendre avec d\'autres, échanger et créer du réseau',
-                      pros: ['Dynamique de groupe', 'Tarif accessible', 'Réseau professionnel']
+                      id: 'express',
+                      icon: '⚡',
+                      title: 'Un coup de boost ponctuel',
+                      description: "J'ai un problème précis à régler maintenant. Pas besoin d'un suivi long.",
+                      examples: ["Débloquer un bug", "Préparer un entretien", "Comprendre un concept"],
+                      price: '5 000 FCFA',
+                      sub: 'Session unique',
+                      color: 'from-amber-400 to-orange-500',
                     },
                     {
-                      id: 'individual',
-                      icon: '👤',
-                      title: 'Individuel 1-to-1',
-                      description: 'Je préfère un accompagnement personnalisé à 100%',
-                      pros: ['100% personnalisé', 'Rythme adapté', 'Focus sur mes besoins']
+                      id: 'light',
+                      icon: '📈',
+                      title: 'Un suivi régulier léger',
+                      description: "Je veux progresser chaque mois avec un coach dédié, à un rythme humain.",
+                      examples: ["2 sessions / mois", "Support WhatsApp", "Même coach dédié"],
+                      price: '13 500 FCFA',
+                      sub: 'Par mois',
+                      color: 'from-blue-500 to-indigo-500',
                     },
                     {
-                      id: 'intensive',
-                      icon: '🔥',
-                      title: 'Formation intensive',
-                      description: 'Je veux un bootcamp complet pour une transformation rapide',
-                      pros: ['Résultats rapides', 'Immersion totale', 'Portfolio complet']
+                      id: 'pro',
+                      icon: '🚀',
+                      title: 'Un accompagnement intensif',
+                      description: "Je veux aller vite, avec un suivi serré, une roadmap et des résultats concrets.",
+                      examples: ["4 sessions / mois", "Roadmap PDF perso", "Support prioritaire"],
+                      price: '25 000 FCFA',
+                      sub: 'Par mois',
+                      color: 'from-violet-600 to-purple-600',
                     },
-                    {
-                      id: 'mentoring',
-                      icon: '🤝',
-                      title: 'Mentorat',
-                      description: 'Je veux un mentor qui me guide sur le long terme',
-                      pros: ['Vision long terme', 'Conseils carrière', 'Soutien continu']
-                    }
                   ].map((option, index) => (
                     <motion.button
+                      id={`pref-${option.id}`}
                       key={option.id}
                       onClick={() => {
-                        setUserProfile(prev => ({ ...prev, preference: option.id as UserProfile['preference'] }));
+                        setUserProfile((prev) => ({ ...prev, preference: option.id as UserProfile['preference'] }));
                         setCurrentStep(4);
                       }}
                       className="group bg-white/90 backdrop-blur-xl rounded-2xl md:rounded-3xl p-6 md:p-8 border border-gray-200/50 shadow-lg hover:shadow-2xl transition-all text-left"
                       variants={scaleIn}
                       transition={{ delay: index * 0.1 }}
-                      whileHover={{ scale: 1.02, y: -3 }}
+                      whileHover={{ scale: 1.02, y: -4 }}
                       whileTap={{ scale: 0.98 }}
                     >
-                      <div className="text-4xl md:text-5xl mb-3 md:mb-4">{option.icon}</div>
-                      <h3 className="text-lg md:text-2xl font-bold mb-2 text-gray-900">{option.title}</h3>
-                      <p className="text-sm md:text-base text-gray-600 mb-3 md:mb-4 leading-relaxed">{option.description}</p>
-                      <div className="space-y-2">
-                        {option.pros.map((pro, i) => (
-                          <div key={i} className="flex items-center text-xs md:text-sm text-gray-700">
-                            <div className="w-2 h-2 bg-turquoise rounded-full mr-2 flex-shrink-0"></div>
-                            <span>{pro}</span>
+                      <div
+                        className={`text-3xl mb-4 p-3 bg-gradient-to-br ${option.color} rounded-xl inline-block`}
+                      >
+                        {option.icon}
+                      </div>
+                      <h3 className="text-lg md:text-xl font-bold mb-2 text-gray-900">{option.title}</h3>
+                      <p className="text-sm text-gray-500 mb-4 leading-relaxed">{option.description}</p>
+                      <div className="space-y-2 mb-5">
+                        {option.examples.map((ex, i) => (
+                          <div key={i} className="flex items-center text-xs text-gray-600 gap-2">
+                            <div className="w-1.5 h-1.5 bg-turquoise rounded-full flex-shrink-0" />
+                            {ex}
                           </div>
                         ))}
+                      </div>
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-xl font-black text-gray-900">{option.price}</span>
+                        <span className="text-xs text-gray-400">{option.sub}</span>
                       </div>
                     </motion.button>
                   ))}
@@ -672,84 +649,80 @@ const ImmersiveExperience = () => {
           </div>
         );
 
-      // Étape 4: Engagement
+      // ──────────────────────────────────────────
+      // Étape 4 : Engagement
+      // ──────────────────────────────────────────
       case 4:
         return (
           <div className="min-h-screen flex items-center justify-center relative bg-gradient-to-br from-blue-50 via-white to-purple-50 pt-32 md:pt-24 pb-12">
-            <motion.div 
+            <motion.div
               className="container mx-auto px-4 md:px-6 lg:px-8 relative z-10"
               initial="hidden"
               animate="visible"
               variants={staggerChildren}
             >
-              <div className="text-center max-w-5xl mx-auto space-y-8 md:space-y-12">
+              <div className="text-center max-w-5xl mx-auto space-y-6 md:space-y-10">
                 <motion.div variants={fadeInUp} className="flex items-center justify-center gap-4">
                   <motion.button
                     onClick={() => setCurrentStep(3)}
-                    className="text-gray-600 hover:text-gray-900 transition-colors font-medium text-sm md:text-base"
+                    className="text-gray-500 hover:text-gray-900 transition-colors font-medium text-sm"
                     whileHover={{ scale: 1.05, x: -2 }}
                     whileTap={{ scale: 0.95 }}
                   >
                     ← Retour
                   </motion.button>
-                  <div className="inline-flex items-center bg-white/80 backdrop-blur-lg px-4 md:px-6 py-2 md:py-3 rounded-full border border-turquoise/20 shadow-lg">
-                    <span className="text-xs md:text-sm font-medium text-gray-700">Question 4/4 · Ton engagement</span>
+                  <div className="inline-flex items-center bg-white/80 backdrop-blur-lg px-4 py-2 rounded-full border border-turquoise/20 shadow-lg">
+                    <span className="text-xs font-semibold text-gray-600">Question 4 / 4 · Engagement</span>
                   </div>
                 </motion.div>
 
-                <motion.h2 
+                <ProgressBar step={4} />
+
+                <motion.h2
                   variants={fadeInUp}
-                  className="text-3xl md:text-5xl lg:text-7xl font-black text-gray-900 leading-tight px-4"
+                  className="text-3xl md:text-5xl lg:text-6xl font-black text-gray-900 leading-tight px-4"
                 >
-                  {'Sur quelle durée veux-tu t\'engager ? 🎯'}
+                  {"Sur quelle durée ? 🗓️"}
                 </motion.h2>
 
-                <motion.p 
-                  variants={fadeInUp}
-                  className="text-base md:text-xl text-gray-600 max-w-2xl mx-auto px-4"
-                >
-                  {'Dernière question ! Ça va m\'aider à affiner mes recommandations'}
+                <motion.p variants={fadeInUp} className="text-base md:text-xl text-gray-500 max-w-2xl mx-auto px-4">
+                  {"Dernière question, c'est la plus facile 😄"}
                 </motion.p>
 
-                <motion.div 
-                  variants={fadeInUp}
-                  className="grid sm:grid-cols-3 gap-4 md:gap-6"
-                >
+                <motion.div variants={fadeInUp} className="grid sm:grid-cols-3 gap-4 md:gap-6">
                   {[
                     {
                       id: 'short',
                       icon: '⚡',
                       title: 'Court terme',
-                      description: 'J\'ai besoin d\'un coup de boost ponctuel',
-                      duration: '1 heure à 1 mois'
+                      description: "J'ai besoin d'aide maintenant, pas d'engagement long",
+                      duration: '1 session unique',
                     },
                     {
                       id: 'medium',
                       icon: '📅',
-                      title: 'Moyen terme',
-                      description: 'Je veux me former sur 1-3 mois',
+                      title: 'Quelques mois',
+                      description: 'Je veux un suivi structuré sur 1 à 3 mois',
                       duration: '1 à 3 mois',
-                      popular: true
+                      popular: true,
                     },
                     {
                       id: 'long',
                       icon: '🌟',
                       title: 'Long terme',
-                      description: 'Je cherche un accompagnement sur plusieurs mois',
-                      duration: '3-6 mois ou plus'
-                    }
+                      description: "Je m'engage plusieurs mois pour des résultats durables",
+                      duration: '3 à 6 mois',
+                    },
                   ].map((option, index) => (
                     <motion.button
+                      id={`commit-${option.id}`}
                       key={option.id}
                       onClick={() => {
                         const updatedProfile = { ...userProfile, commitment: option.id as UserProfile['commitment'] };
                         setUserProfile(updatedProfile);
-                        
-                        // Générer les recommandations
                         const recommendations = generateRecommendations(updatedProfile);
                         setRecommendedOffers(recommendations);
                         setShowRecommendations(true);
-                        
                         setTimeout(() => {
                           setCurrentStep(5);
                         }, 1500);
@@ -767,12 +740,11 @@ const ImmersiveExperience = () => {
                           </div>
                         </div>
                       )}
-                      
                       <div className="text-4xl md:text-5xl mb-3 md:mb-4">{option.icon}</div>
                       <h3 className="text-lg md:text-2xl font-bold mb-2 text-gray-900">{option.title}</h3>
-                      <p className="text-sm md:text-base text-gray-600 mb-3 leading-relaxed">{option.description}</p>
-                      <div className="inline-flex items-center bg-gradient-to-r from-turquoise/10 to-blue-bright/10 px-3 md:px-4 py-1.5 md:py-2 rounded-full border border-turquoise/20">
-                        <span className="text-xs md:text-sm font-medium text-turquoise">{option.duration}</span>
+                      <p className="text-sm md:text-base text-gray-500 mb-4 leading-relaxed">{option.description}</p>
+                      <div className="inline-flex items-center bg-gradient-to-r from-turquoise/10 to-blue-bright/10 px-3 py-1.5 rounded-full border border-turquoise/20">
+                        <span className="text-xs font-semibold text-turquoise">{option.duration}</span>
                       </div>
                     </motion.button>
                   ))}
@@ -780,36 +752,32 @@ const ImmersiveExperience = () => {
               </div>
             </motion.div>
 
-            {/* Modal d'analyse */}
+            {/* Modal analyse */}
             <AnimatePresence>
               {showRecommendations && (
-                <motion.div 
+                <motion.div
                   className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                 >
-                  <motion.div 
+                  <motion.div
                     className="bg-white rounded-3xl p-12 text-center max-w-md mx-4 shadow-2xl"
                     initial={{ scale: 0.8, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     exit={{ scale: 0.8, opacity: 0 }}
                   >
-                    <motion.div 
+                    <motion.div
                       className="size-24 bg-gradient-to-r from-turquoise to-blue-bright rounded-full mx-auto mb-6 flex items-center justify-center"
                       animate={{ rotate: 360 }}
-                      transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                      transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
                     >
                       <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                       </svg>
                     </motion.div>
-                    
                     <h3 className="text-3xl font-bold mb-4 text-gray-900">Analyse en cours...</h3>
-                    <p className="text-gray-600 mb-6">
-                      Je trouve les meilleures options pour ton profil ! 🎯
-                    </p>
-                    
+                    <p className="text-gray-500 mb-6">Je trouve ton accompagnement idéal ! 🎯</p>
                     <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
                       <motion.div
                         className="h-full bg-gradient-to-r from-turquoise to-blue-bright rounded-full"
@@ -825,17 +793,18 @@ const ImmersiveExperience = () => {
           </div>
         );
 
-      // Étape 5: Recommandations (SANS PRIX encore)
+      // ──────────────────────────────────────────
+      // Étape 5 : Recommandations (avec prix visibles)
+      // ──────────────────────────────────────────
       case 5:
         return (
           <div className="min-h-screen flex items-center justify-center relative bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 pt-32 md:pt-24 pb-12 md:pb-20">
-            {/* Dégradé de fond subtil */}
             <div className="absolute inset-0 pointer-events-none">
               <div className="absolute top-20 right-10 w-96 h-96 bg-turquoise/10 rounded-full blur-3xl" />
               <div className="absolute bottom-20 left-10 w-80 h-80 bg-blue-bright/10 rounded-full blur-3xl" />
             </div>
 
-            <motion.div 
+            <motion.div
               className="container mx-auto px-4 md:px-6 lg:px-8 relative z-10"
               initial="hidden"
               animate="visible"
@@ -845,42 +814,39 @@ const ImmersiveExperience = () => {
                 <motion.div variants={fadeInUp} className="flex items-center justify-center gap-4">
                   <motion.button
                     onClick={() => setCurrentStep(4)}
-                    className="text-white/70 hover:text-white transition-colors font-medium text-sm md:text-base"
+                    className="text-white/60 hover:text-white transition-colors font-medium text-sm"
                     whileHover={{ scale: 1.05, x: -2 }}
                     whileTap={{ scale: 0.95 }}
                   >
                     ← Retour
                   </motion.button>
-                  <div className="inline-flex items-center bg-green-500/20 backdrop-blur-xl px-4 md:px-6 py-2 md:py-3 rounded-full border border-green-400/30 shadow-lg">
-                    <span className="text-sm md:text-lg font-semibold text-white">✨ Analyse terminée !</span>
+                  <div className="inline-flex items-center bg-green-500/20 backdrop-blur-xl px-5 py-2.5 rounded-full border border-green-400/30">
+                    <span className="text-sm md:text-base font-semibold text-white">✨ Résultat personnalisé</span>
                   </div>
                 </motion.div>
 
-                <motion.h2 
+                <motion.h2
                   variants={fadeInUp}
-                  className="text-3xl md:text-5xl lg:text-7xl font-black text-white leading-tight px-4"
+                  className="text-3xl md:text-5xl lg:text-6xl font-black text-white leading-tight px-4"
                 >
-                  Voici les 3 meilleures options pour toi ! 🎯
+                  Tes offres recommandées 🎯
                 </motion.h2>
 
-                <motion.p 
-                  variants={fadeInUp}
-                  className="text-base md:text-xl text-white/80 max-w-3xl mx-auto px-4 leading-relaxed"
-                >
-                  {'Basé sur ton profil, j\'ai sélectionné les accompagnements les plus adaptés. '}
-                  {'Clique sur une option pour découvrir les détails et le tarif 👇'}
+                <motion.p variants={fadeInUp} className="text-base md:text-lg text-white/60 max-w-3xl mx-auto px-4">
+                  Clique sur une offre pour voir les détails et accéder au paiement sécurisé via Chariow.
                 </motion.p>
 
-                <motion.div 
+                <motion.div
                   className="grid sm:grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 max-w-7xl mx-auto"
                   variants={staggerChildren}
                 >
                   {recommendedOffers.map((offer, index) => (
                     <motion.div
+                      id={`offer-card-${offer.id}`}
                       key={offer.id}
                       className={`group relative bg-white/95 backdrop-blur-xl rounded-3xl p-8 border-2 transition-all cursor-pointer ${
-                        index === 0 
-                          ? 'border-yellow-400 shadow-2xl shadow-yellow-500/20 lg:scale-105' 
+                        index === 0
+                          ? 'border-yellow-400 shadow-2xl shadow-yellow-500/20 lg:scale-105'
                           : 'border-white/50 shadow-xl hover:border-turquoise/50'
                       }`}
                       variants={scaleIn}
@@ -891,20 +857,21 @@ const ImmersiveExperience = () => {
                         setCurrentStep(6);
                       }}
                     >
-                      {/* Badge de match - positionné au-dessus de la carte */}
+                      {/* Badge % match */}
                       <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-20">
-                        <div className={`${
-                          index === 0
-                            ? 'bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400'
-                            : 'bg-gradient-to-r from-turquoise to-blue-bright'
-                        } text-white px-5 py-2 rounded-full text-sm font-black shadow-xl whitespace-nowrap`}>
+                        <div
+                          className={`${
+                            index === 0
+                              ? 'bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400'
+                              : 'bg-gradient-to-r from-turquoise to-blue-bright'
+                          } text-white px-5 py-2 rounded-full text-sm font-black shadow-xl whitespace-nowrap`}
+                        >
                           {index === 0 && '⭐ '}
                           {offer.matchScore}% de match
                           {index === 0 && ' ⭐'}
                         </div>
                       </div>
 
-                      {/* Badge "MEILLEUR CHOIX" */}
                       {index === 0 && (
                         <div className="absolute -top-4 -right-4 z-20">
                           <div className="bg-gradient-to-br from-yellow-500 to-orange-600 text-white px-4 py-2 rounded-full text-xs font-black shadow-2xl rotate-12 whitespace-nowrap border-2 border-yellow-300">
@@ -912,67 +879,62 @@ const ImmersiveExperience = () => {
                           </div>
                         </div>
                       )}
-                      
-                      {/* Effet de gradient au survol */}
-                      <motion.div 
+
+                      <motion.div
                         className={`absolute inset-0 bg-gradient-to-br ${offer.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500 rounded-3xl`}
                       />
-                      
+
                       <div className="relative z-10 flex flex-col h-full">
-                        {/* Icône et titre */}
-                        <div className="text-center mb-6">
-                          <div className="text-6xl mb-4 transform group-hover:scale-110 transition-transform duration-300">{offer.icon}</div>
-                          <h3 className="text-2xl font-black mb-2 text-gray-900 leading-tight">{offer.name}</h3>
-                          <p className="text-turquoise font-bold text-base">{offer.tagline}</p>
-                        </div>
-                        
-                        {/* Infos durée et format */}
-                        <div className="mb-6 p-4 bg-gradient-to-r from-turquoise/5 to-blue-bright/5 rounded-2xl border border-turquoise/10">
-                          <div className="flex items-center justify-center gap-4 text-sm text-gray-700 font-medium">
-                            <span className="flex items-center gap-1.5 whitespace-nowrap">
-                              <span className="text-lg">⏱️</span>
-                              {offer.duration}
-                            </span>
-                            <span className="text-turquoise">•</span>
-                            <span className="flex items-center gap-1.5 whitespace-nowrap">
-                              <span className="text-lg">📅</span>
-                              {offer.format}
-                            </span>
+                        {/* Icône + titre */}
+                        <div className="text-center mb-5">
+                          <div className="text-5xl mb-3 transform group-hover:scale-110 transition-transform duration-300">
+                            {offer.icon}
                           </div>
+                          <h3 className="text-2xl font-black mb-1 text-gray-900 leading-tight">{offer.name}</h3>
+                          <p className="text-turquoise font-bold text-sm">{offer.tagline}</p>
                         </div>
-                        
-                        {/* Description */}
-                        <p className="text-gray-600 mb-6 text-sm leading-relaxed text-center min-h-[3rem]">{offer.description}</p>
-                        
-                        {/* Features - liste alignée */}
-                        <div className="space-y-3 mb-8 flex-grow">
+
+                        {/* Prix visible dès la liste */}
+                        <div className="mb-4 p-4 bg-gray-50 rounded-2xl border border-gray-100 text-center">
+                          <div className="text-2xl font-black text-gray-900">{offer.price}</div>
+                          <div className="text-xs text-gray-400 mt-0.5">{offer.priceNote}</div>
+                        </div>
+
+                        {/* Durée & format */}
+                        <div className="mb-5 flex items-center justify-center gap-3 text-xs text-gray-600 font-medium">
+                          <span className="flex items-center gap-1">⏱️ {offer.duration}</span>
+                          <span className="text-turquoise">·</span>
+                          <span className="flex items-center gap-1">📅 {offer.format}</span>
+                        </div>
+
+                        {/* Features (3 premières) */}
+                        <div className="space-y-2.5 mb-6 flex-grow">
                           {offer.features.slice(0, 3).map((feature, i) => (
                             <div key={i} className="flex items-start gap-3">
                               <div className="w-5 h-5 bg-gradient-to-br from-turquoise to-blue-bright rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                                 <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path>
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
                                 </svg>
                               </div>
                               <span className="text-sm text-gray-700 leading-relaxed">{feature}</span>
                             </div>
                           ))}
                         </div>
-                        
-                        {/* Bouton CTA */}
+
+                        {/* Bouton */}
                         <motion.button
-                          className={`w-full text-white py-4 px-6 rounded-2xl font-bold shadow-lg text-base ${
+                          className={`w-full text-white py-4 px-6 rounded-2xl font-bold text-base ${
                             index === 0
-                              ? 'bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 shadow-orange-500/30'
+                              ? 'bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500'
                               : 'bg-gradient-to-r from-turquoise to-blue-bright'
                           }`}
-                          whileHover={{ scale: 1.03, boxShadow: '0 20px 40px rgba(10, 185, 166, 0.3)' }}
+                          whileHover={{ scale: 1.03 }}
                           whileTap={{ scale: 0.97 }}
                         >
                           <span className="flex items-center justify-center gap-2">
-                            {index === 0 && '🎯 '}
-                            Voir les détails
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                            {index === 0 && '🎯 '}Voir les détails & commander
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                             </svg>
                           </span>
                         </motion.button>
@@ -981,102 +943,121 @@ const ImmersiveExperience = () => {
                   ))}
                 </motion.div>
 
-                <motion.div 
-                  variants={fadeInUp}
-                  className="mt-8 md:mt-16 text-center space-y-3 md:space-y-4 px-4"
-                >
-                  <p className="text-white/60 text-sm md:text-base">
-                    Clique sur une option pour découvrir les tarifs et détails complets
+                {/* Méthodes de paiement */}
+                <motion.div variants={fadeInUp} className="text-center space-y-2">
+                  <p className="text-white/40 text-sm">
+                    🔒 Paiement sécurisé via Chariow
                   </p>
+                  <div className="flex items-center justify-center gap-3 flex-wrap">
+                    {['MTN MoMo', 'Wave', 'Orange Money', 'Moov Money'].map((m) => (
+                      <span key={m} className="text-xs text-white/30 bg-white/5 px-3 py-1 rounded-full border border-white/10">
+                        {m}
+                      </span>
+                    ))}
+                  </div>
                 </motion.div>
               </div>
             </motion.div>
           </div>
         );
 
-      // Étape 6: Détails de l'offre avec PRIX
+      // ──────────────────────────────────────────
+      // Étape 6 : Détail offre + commande Chariow
+      // ──────────────────────────────────────────
       case 6:
         return (
-          <div className="min-h-screen flex items-center justify-center relative bg-gradient-to-br from-turquoise-50 via-white to-blue-50 pt-32 md:pt-24 pb-12 md:pb-20">
-            {/* Dégradés d'arrière-plan */}
+          <div className="min-h-screen flex items-center justify-center relative bg-gradient-to-br from-slate-50 via-white to-blue-50 pt-32 md:pt-24 pb-12 md:pb-20">
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
-              <div className="absolute top-20 right-10 w-96 h-96 bg-turquoise/10 rounded-full blur-3xl" />
-              <div className="absolute bottom-20 left-10 w-80 h-80 bg-blue-bright/10 rounded-full blur-3xl" />
+              <div className="absolute top-20 right-10 w-96 h-96 bg-turquoise/8 rounded-full blur-3xl" />
+              <div className="absolute bottom-20 left-10 w-80 h-80 bg-blue-bright/8 rounded-full blur-3xl" />
             </div>
 
-            <motion.div 
+            <motion.div
               className="container mx-auto px-4 md:px-6 lg:px-8 relative z-10"
               initial="hidden"
               animate="visible"
               variants={staggerChildren}
             >
-              <div className="text-center max-w-7xl mx-auto space-y-6 md:space-y-10">
-                <motion.div variants={fadeInUp} className="space-y-4">
-                  <div className="inline-flex items-center bg-gradient-to-r from-green-500 to-turquoise text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-bold text-base md:text-xl shadow-2xl">
-                    <span className="text-2xl mr-2">🎉</span>
-                    Excellent choix !
-                  </div>
+              <div className="text-center max-w-7xl mx-auto space-y-6 md:space-y-8">
+                {/* Navigation */}
+                <motion.div variants={fadeInUp} className="flex items-center justify-center">
+                  <motion.button
+                    onClick={() => setCurrentStep(5)}
+                    className="text-gray-500 hover:text-gray-900 transition-colors font-medium text-sm flex items-center gap-2"
+                    whileHover={{ scale: 1.05, x: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    Voir les autres offres
+                  </motion.button>
                 </motion.div>
 
-                <motion.div variants={fadeInUp} className="space-y-4">
-                  <div className="text-5xl md:text-7xl mb-4">{selectedOffer?.icon}</div>
-                  <h2 className="text-3xl md:text-5xl lg:text-7xl font-black leading-tight px-4">
+                {/* En-tête offre */}
+                <motion.div variants={fadeInUp} className="space-y-2">
+                  <div className="text-5xl md:text-7xl mb-3">{selectedOffer?.icon}</div>
+                  <h2 className="text-3xl md:text-5xl font-black leading-tight px-4">
                     <span className="bg-gradient-to-r from-turquoise via-blue-bright to-purple-600 bg-clip-text text-transparent">
                       {selectedOffer?.name}
                     </span>
                   </h2>
-                  <p className="text-xl md:text-2xl text-turquoise font-bold">{selectedOffer?.tagline}</p>
+                  <p className="text-lg md:text-xl text-turquoise font-bold">{selectedOffer?.tagline}</p>
                 </motion.div>
 
-                <motion.div 
+                {/* Grid détails / CTA */}
+                <motion.div
                   variants={fadeInUp}
                   className="grid lg:grid-cols-5 gap-8 md:gap-10 items-start max-w-7xl mx-auto"
                 >
-                  {/* Colonne gauche : Détails de l'offre (3/5) */}
+                  {/* ── Colonne gauche : Détails (3/5) ── */}
                   <div className="lg:col-span-3 bg-white/95 backdrop-blur-xl rounded-3xl p-8 md:p-10 border-2 border-turquoise/20 shadow-2xl text-left">
-                    {/* Prix en vedette */}
-                    <div className="mb-8 p-6 bg-gradient-to-br from-turquoise/10 via-blue-bright/10 to-purple-500/10 rounded-2xl border-2 border-turquoise/30 text-center">
-                      <div className="text-sm text-gray-600 mb-2 font-medium uppercase tracking-wide">Tarif mensuel</div>
+                    {/* Prix */}
+                    <div className="mb-8 p-6 bg-gradient-to-br from-turquoise/10 via-blue-bright/10 to-purple-500/10 rounded-2xl border-2 border-turquoise/25 text-center">
+                      <div className="text-sm text-gray-400 mb-1 uppercase tracking-widest font-semibold">
+                        {selectedOffer?.format === 'Session unique' ? 'Tarif session' : 'Tarif mensuel'}
+                      </div>
                       <div className="text-5xl md:text-6xl font-black bg-gradient-to-r from-turquoise to-blue-bright bg-clip-text text-transparent mb-2">
                         {selectedOffer?.price}
                       </div>
-                      <div className="text-sm text-gray-500 font-medium">Paiement flexible disponible</div>
+                      <div className="text-sm text-gray-400">{selectedOffer?.priceNote}</div>
                     </div>
 
-                    <p className="text-gray-600 mb-8 text-base md:text-lg leading-relaxed text-center">{selectedOffer?.description}</p>
+                    <p className="text-gray-600 mb-8 text-base md:text-lg leading-relaxed text-center">
+                      {selectedOffer?.description}
+                    </p>
 
-                    {/* Infos durée et format */}
+                    {/* Durée & Format */}
                     <div className="mb-8 grid grid-cols-2 gap-4">
-                      <div className="p-4 bg-gradient-to-br from-turquoise/5 to-transparent rounded-2xl border border-turquoise/10 text-center">
+                      <div className="p-4 bg-turquoise/5 rounded-2xl border border-turquoise/10 text-center">
                         <div className="text-3xl mb-2">⏱️</div>
                         <div className="text-sm font-bold text-gray-900 mb-1">Durée</div>
-                        <div className="text-xs text-gray-600">{selectedOffer?.duration}</div>
+                        <div className="text-xs text-gray-500">{selectedOffer?.duration}</div>
                       </div>
-                      <div className="p-4 bg-gradient-to-br from-blue-bright/5 to-transparent rounded-2xl border border-blue-bright/10 text-center">
+                      <div className="p-4 bg-blue-bright/5 rounded-2xl border border-blue-bright/10 text-center">
                         <div className="text-3xl mb-2">📅</div>
                         <div className="text-sm font-bold text-gray-900 mb-1">Format</div>
-                        <div className="text-xs text-gray-600">{selectedOffer?.format}</div>
+                        <div className="text-xs text-gray-500">{selectedOffer?.format}</div>
                       </div>
                     </div>
 
-                    {/* Features */}
-                    <div className="mb-6">
-                      <h4 className="font-black text-xl md:text-2xl mb-6 text-gray-900 flex items-center">
-                        <span className="text-2xl mr-3">✨</span>
-                        Ce que tu vas recevoir
+                    {/* Ce que tu reçois */}
+                    <div className="mb-8">
+                      <h4 className="font-black text-xl md:text-2xl mb-5 text-gray-900 flex items-center gap-2">
+                        <span>✨</span> Ce que tu reçois exactement
                       </h4>
-                      <div className="space-y-4">
+                      <div className="space-y-3">
                         {selectedOffer?.features.map((feature, i) => (
-                          <motion.div 
-                            key={i} 
+                          <motion.div
+                            key={i}
                             className="flex items-start gap-4 p-3 rounded-xl hover:bg-turquoise/5 transition-colors"
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: i * 0.1 }}
+                            transition={{ delay: i * 0.08 }}
                           >
-                            <div className="w-7 h-7 bg-gradient-to-br from-turquoise to-blue-bright rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 shadow-lg">
+                            <div className="w-7 h-7 bg-gradient-to-br from-turquoise to-blue-bright rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 shadow-md">
                               <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path>
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
                               </svg>
                             </div>
                             <span className="text-sm md:text-base text-gray-700 leading-relaxed font-medium">{feature}</span>
@@ -1084,130 +1065,141 @@ const ImmersiveExperience = () => {
                         ))}
                       </div>
                     </div>
+
+                    {/* Cas d'usage */}
+                    <div className="p-5 bg-gradient-to-r from-blue-50 to-turquoise/5 rounded-2xl border border-turquoise/10">
+                      <p className="text-sm font-bold text-gray-600 mb-3">💡 Parfait pour :</p>
+                      <div className="flex flex-wrap gap-2">
+                        {selectedOffer?.useCases.map((uc, i) => (
+                          <span
+                            key={i}
+                            className="text-xs bg-white px-3 py-1.5 rounded-full border border-turquoise/20 text-turquoise font-semibold shadow-sm"
+                          >
+                            {uc}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
                   </div>
 
-                  {/* Colonne droite : CTA et garanties (2/5) */}
-                  <div className="lg:col-span-2 space-y-6">
-                    {/* CTA Principal - EN HAUT */}
-                    <motion.div 
+                  {/* ── Colonne droite : CTA (2/5) ── */}
+                  <div className="lg:col-span-2 space-y-5">
+                    <motion.div
                       className="sticky top-24"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.3 }}
                     >
-                      <div className="bg-gradient-to-br from-turquoise via-blue-bright to-purple-600 rounded-3xl p-1 shadow-2xl">
+                      {/* Carte CTA principale */}
+                      <div className="bg-gradient-to-br from-turquoise via-blue-bright to-purple-600 rounded-3xl p-1 shadow-2xl mb-5">
                         <div className="bg-white rounded-[22px] p-6 md:p-8 text-center">
-                          <div className="mb-6">
-                            <div className="inline-flex items-center bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm font-bold mb-4">
-                              <span className="mr-2">🔥</span>
-                              Places limitées ce mois-ci
+                          {/* Alerte places limitées */}
+                          <div className="mb-5 p-3 bg-amber-50 border border-amber-200 rounded-xl">
+                            <div className="flex items-center justify-center gap-2 text-amber-700 text-sm font-bold">
+                              <span>🔥</span>
+                              <span>Places limitées par coach</span>
                             </div>
+                            <p className="text-xs text-amber-600 mt-1 leading-relaxed">
+                              Chaque coach limite son nombre de mentorés actifs pour garantir la qualité de l&apos;accompagnement.
+                            </p>
                           </div>
 
+                          {/* Prix recap */}
+                          <div className="mb-6">
+                            <div className="text-4xl font-black text-gray-900">{selectedOffer?.price}</div>
+                            <div className="text-sm text-gray-400 mt-1">{selectedOffer?.priceNote}</div>
+                          </div>
+
+                          {/* CTA Chariow */}
                           <motion.a
+                            id="chariow-buy-btn"
                             href={selectedOffer?.buyLink}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="block w-full bg-gradient-to-r from-turquoise to-blue-bright text-white text-xl md:text-2xl font-black py-5 md:py-6 px-6 rounded-2xl text-center shadow-xl mb-4"
+                            className="block w-full bg-gradient-to-r from-turquoise to-blue-bright text-white text-xl font-black py-5 px-6 rounded-2xl text-center shadow-xl mb-4 hover:no-underline"
                             whileHover={{ scale: 1.05, boxShadow: '0 25px 50px rgba(10, 185, 166, 0.4)' }}
                             whileTap={{ scale: 0.95 }}
                           >
-                            <span className="flex flex-col items-center gap-2">
-                              <span>🚀 Je commence maintenant</span>
-                              <span className="text-lg font-medium">
-                                Seulement {selectedOffer?.price}
-                              </span>
+                            <span className="flex flex-col items-center gap-1.5">
+                              <span>🛒 Commander maintenant</span>
+                              <span className="text-sm font-medium opacity-80">Paiement sécurisé via Chariow</span>
                             </span>
                           </motion.a>
-                          
+
+                          {/* WhatsApp */}
                           <motion.button
-                            onClick={() => window.open('https://wa.me/22901624357 41', '_blank')}
+                            id="whatsapp-contact-btn"
+                            onClick={() => window.open('https://wa.me/22901624357', '_blank')}
                             className="w-full bg-white border-2 border-turquoise text-turquoise font-bold py-4 px-6 rounded-2xl hover:bg-turquoise hover:text-white transition-all duration-300 text-base mb-4"
                             whileHover={{ scale: 1.03 }}
                             whileTap={{ scale: 0.97 }}
                           >
-                            {'💬 Questions ? WhatsApp direct'}
+                            💬 Une question ? WhatsApp
                           </motion.button>
 
                           <button
                             onClick={() => setCurrentStep(5)}
-                            className="w-full text-gray-600 font-medium py-3 hover:text-turquoise transition-colors text-sm flex items-center justify-center gap-2"
+                            className="w-full text-gray-400 font-medium py-2 hover:text-turquoise transition-colors text-sm flex items-center justify-center gap-2"
                           >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
                             </svg>
-                            Voir les autres options
+                            Voir les autres offres
                           </button>
                         </div>
                       </div>
+
+                      {/* Engagements */}
+                      <div className="bg-white/95 backdrop-blur-xl rounded-3xl p-6 border-2 border-turquoise/20 shadow-xl">
+                        <h4 className="text-base font-black mb-4 text-gray-900 text-center">🛡️ Nos engagements</h4>
+                        <div className="space-y-3">
+                          {[
+                            {
+                              icon: '⚡',
+                              title: 'Réservation rapide',
+                              desc: 'Créneau confirmé sous 24h',
+                              color: 'from-yellow-400 to-orange-500',
+                            },
+                            {
+                              icon: '🎯',
+                              title: 'Session orientée résultat',
+                              desc: 'Accompagnement concret et personnalisé',
+                              color: 'from-turquoise to-blue-bright',
+                            },
+                            {
+                              icon: '📱',
+                              title: 'Mobile Money accepté',
+                              desc: 'MTN · Wave · Orange · Moov',
+                              color: 'from-green-400 to-emerald-500',
+                            },
+                            {
+                              icon: '🔒',
+                              title: 'Paiement sécurisé',
+                              desc: 'Via Chariow — 100% fiable',
+                              color: 'from-blue-400 to-indigo-500',
+                            },
+                          ].map((item, i) => (
+                            <motion.div
+                              key={i}
+                              className="flex items-start gap-3 p-3 rounded-xl hover:bg-gray-50 transition-all"
+                              initial={{ opacity: 0, x: 20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: 0.4 + i * 0.1 }}
+                            >
+                              <div
+                                className={`text-lg bg-gradient-to-br ${item.color} w-10 h-10 rounded-xl flex items-center justify-center shadow-md flex-shrink-0`}
+                              >
+                                {item.icon}
+                              </div>
+                              <div>
+                                <div className="font-bold text-sm text-gray-900">{item.title}</div>
+                                <div className="text-xs text-gray-400">{item.desc}</div>
+                              </div>
+                            </motion.div>
+                          ))}
+                        </div>
+                      </div>
                     </motion.div>
-
-                    {/* Garanties et avantages */}
-                    <div className="bg-white/95 backdrop-blur-xl rounded-3xl p-6 md:p-8 border-2 border-turquoise/20 shadow-xl">
-                      <h4 className="text-lg md:text-xl font-black mb-6 text-gray-900 text-center">
-                        ✨ Pourquoi tu vas adorer
-                      </h4>
-                      <div className="space-y-5">
-                        {[
-                          {
-                            icon: '⚡',
-                            title: 'Accès immédiat',
-                            desc: 'Démarre en moins de 5 min',
-                            color: 'from-yellow-400 to-orange-500'
-                          },
-                          {
-                            icon: '🎯',
-                            title: 'Suivi personnalisé',
-                            desc: 'Adapté à ton rythme',
-                            color: 'from-turquoise to-blue-bright'
-                          },
-                          {
-                            icon: '💬',
-                            title: 'Support quotidien',
-                            desc: 'Aide via WhatsApp',
-                            color: 'from-green-400 to-emerald-500'
-                          },
-                          {
-                            icon: '✅',
-                            title: '98% satisfaits',
-                            desc: 'Nos apprenants recommandent',
-                            color: 'from-purple-400 to-pink-500'
-                          }
-                        ].map((item, i) => (
-                          <motion.div 
-                            key={i} 
-                            className="flex items-start gap-4 p-4 rounded-2xl bg-gradient-to-r from-gray-50 to-transparent hover:from-turquoise/5 transition-all"
-                            initial={{ opacity: 0, x: 20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.4 + (i * 0.1) }}
-                          >
-                            <div className={`text-3xl bg-gradient-to-br ${item.color} w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0`}>
-                              {item.icon}
-                            </div>
-                            <div className="min-w-0">
-                              <div className="font-bold text-base text-gray-900 mb-1">{item.title}</div>
-                              <div className="text-sm text-gray-600">{item.desc}</div>
-                            </div>
-                          </motion.div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Badges de confiance */}
-                    <div className="text-center text-sm text-gray-600 space-y-3 p-4 bg-gray-50 rounded-2xl">
-                      <div className="flex items-center justify-center gap-2">
-                        <span className="text-green-500 text-lg">🔒</span>
-                        <span className="font-semibold">Paiement 100% sécurisé</span>
-                      </div>
-                      <div className="flex items-center justify-center gap-2">
-                        <span className="text-blue-500 text-lg">✅</span>
-                        <span className="font-semibold">Satisfait ou remboursé 14 jours</span>
-                      </div>
-                      <div className="flex items-center justify-center gap-2">
-                        <span className="text-purple-500 text-lg">🎁</span>
-                        <span className="font-semibold">Support illimité inclus</span>
-                      </div>
-                    </div>
                   </div>
                 </motion.div>
               </div>

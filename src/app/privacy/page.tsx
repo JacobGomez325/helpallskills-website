@@ -1,152 +1,132 @@
-'use client';
+import type { Metadata } from 'next';
+import LegalShell from '@/components/legal/LegalShell';
 
-import { motion } from 'framer-motion';
-import Link from 'next/link';
+export const metadata: Metadata = {
+  title: 'Politique de confidentialité',
+  description:
+    "Comment HelpAll Skills collecte, utilise et protège tes données personnelles. Conforme aux principes du RGPD et de la loi béninoise n°2017-20.",
+  alternates: { canonical: '/privacy' },
+  robots: { index: true, follow: true },
+};
 
 export default function PrivacyPage() {
-  const sections = [
-    {
-      title: "1. Collecte des données",
-      content: [
-        "Nous collectons des informations lorsque vous vous inscrivez à nos formations, remplissez un formulaire de contact, ou interagissez avec notre site web.",
-        "Les données collectées peuvent inclure : nom, adresse e-mail, numéro de téléphone, informations de paiement, et préférences de formation.",
-        "Nous utilisons des cookies pour améliorer votre expérience utilisateur et analyser le trafic de notre site."
-      ]
-    },
-    {
-      title: "2. Utilisation des données",
-      content: [
-        "Vos données sont utilisées pour fournir nos services de formation et de coaching.",
-        "Nous utilisons vos informations pour communiquer avec vous concernant vos formations et nos services.",
-        "Avec votre consentement, nous pouvons vous envoyer des newsletters et des informations sur nos nouveaux programmes."
-      ]
-    },
-    {
-      title: "3. Protection des données",
-      content: [
-        "Nous mettons en place des mesures de sécurité appropriées pour protéger vos informations personnelles.",
-        "Vos données de paiement sont traitées de manière sécurisée par nos partenaires de paiement certifiés.",
-        "L'accès à vos données est limité aux employés autorisés qui en ont besoin pour fournir nos services."
-      ]
-    },
-    {
-      title: "4. Partage des données",
-      content: [
-        "Nous ne vendons, n'échangeons ni ne transférons vos informations personnelles à des tiers sans votre consentement.",
-        "Nous pouvons partager des informations avec des prestataires de services tiers qui nous aident à exploiter notre site web et à fournir nos services.",
-        "Nous pouvons divulguer des informations si la loi l'exige ou pour protéger nos droits."
-      ]
-    },
-    {
-      title: "5. Vos droits",
-      content: [
-        "Vous avez le droit d'accéder à vos données personnelles que nous détenons.",
-        "Vous pouvez demander la correction ou la suppression de vos données.",
-        "Vous pouvez vous opposer au traitement de vos données à des fins de marketing direct.",
-        "Vous pouvez retirer votre consentement à tout moment."
-      ]
-    },
-    {
-      title: "6. Cookies",
-      content: [
-        "Notre site utilise des cookies pour améliorer votre expérience de navigation.",
-        "Vous pouvez configurer votre navigateur pour refuser les cookies, mais cela peut affecter le fonctionnement du site.",
-        "Nous utilisons Google Analytics pour analyser l'utilisation de notre site (données anonymisées)."
-      ]
-    },
-    {
-      title: "7. Conservation des données",
-      content: [
-        "Nous conservons vos données aussi longtemps que nécessaire pour fournir nos services.",
-        "Les données de compte sont conservées tant que votre compte est actif.",
-        "Nous pouvons conserver certaines informations pour nous conformer aux obligations légales."
-      ]
-    }
-  ];
-
   return (
-    <div className="min-h-screen bg-white">
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 bg-gradient-to-br from-blue-50 to-turquoise-50">
-        <div className="container mx-auto px-4">
-          <motion.div
-            className="text-center max-w-4xl mx-auto"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-blue-bright to-turquoise bg-clip-text text-transparent">
-              Politique de confidentialité
-            </h1>
-            <p className="text-xl text-gray-600 mb-8">
-              Nous nous engageons à protéger et respecter votre vie privée. Cette politique explique comment nous collectons, utilisons et protégeons vos informations personnelles.
-            </p>
-            <p className="text-sm text-gray-500">
-              Dernière mise à jour : 1er janvier 2024
-            </p>
-          </motion.div>
-        </div>
-      </section>
+    <LegalShell
+      title="Politique de confidentialité"
+      subtitle="Quelles données on collecte, pourquoi, combien de temps on les garde, et comment tu peux les contrôler."
+      lastUpdated="25 mai 2026"
+    >
+      <div className="callout">
+        On collecte le minimum pour bosser ensemble. Pas de revente. Pas de tracking publicitaire.
+        Si tu veux qu&apos;on supprime tout&nbsp;: un email à <a href="mailto:hi@helpallskills.com">hi@helpallskills.com</a> suffit.
+      </div>
 
-      {/* Content */}
-      <section className="py-20">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            {sections.map((section, index) => (
-              <motion.div
-                key={index}
-                className="mb-12"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                <h2 className="text-2xl font-bold mb-6 text-gray-900">
-                  {section.title}
-                </h2>
-                <div className="space-y-4">
-                  {section.content.map((paragraph, pIndex) => (
-                    <p key={pIndex} className="text-gray-600 leading-relaxed">
-                      {paragraph}
-                    </p>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+      <h2>1. Qui est responsable du traitement</h2>
+      <p>
+        Le responsable du traitement des données personnelles est <strong>HelpAll Skills</strong>,
+        opéré par GOMEZ Jacob Ambroise David (Cotonou, République du Bénin).
+      </p>
+      <p>
+        Contact pour toute question liée à tes données&nbsp;:
+        <a href="mailto:hi@helpallskills.com">hi@helpallskills.com</a>.
+      </p>
 
-      {/* Contact Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 className="text-3xl font-bold mb-6 text-gray-900">
-              Des questions ?
-            </h2>
-            <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-              Si vous avez des questions concernant cette politique de confidentialité ou nos pratiques de traitement des données, n&apos;hésitez pas à nous contacter.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/#contact" className="btn-primary">
-                Nous contacter
-              </Link>
-              <Link href="/" className="btn-secondary">
-                Retour à l&apos;accueil
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-    </div>
+      <h2>2. Quelles données on collecte</h2>
+      <h3>2.1 Données que tu nous donnes</h3>
+      <ul>
+        <li><strong>Identité&nbsp;:</strong> nom, prénom.</li>
+        <li><strong>Contact&nbsp;:</strong> email, numéro WhatsApp.</li>
+        <li><strong>Échanges&nbsp;:</strong> messages WhatsApp, emails, contenu des sessions visio (notes prises par ton coach).</li>
+        <li><strong>Paiement&nbsp;:</strong> détails de transaction (montant, formule, date) — les données bancaires ne sont jamais stockées chez nous, elles transitent uniquement par Chariow.</li>
+      </ul>
+
+      <h3>2.2 Données collectées automatiquement</h3>
+      <ul>
+        <li>Données techniques minimales lors de la visite du site (adresse IP, navigateur, pages vues) via les logs d&apos;hébergement.</li>
+        <li>Aucun cookie de tracking publicitaire. Aucun pixel Meta ou Google Ads.</li>
+      </ul>
+
+      <h2>3. Pourquoi on les utilise</h2>
+      <ul>
+        <li><strong>Fournir le service&nbsp;:</strong> organiser les sessions, te contacter, suivre ta progression.</li>
+        <li><strong>Facturer&nbsp;:</strong> émettre les reçus et tenir la comptabilité.</li>
+        <li><strong>Communiquer&nbsp;:</strong> répondre à tes questions sur WhatsApp ou par email.</li>
+        <li><strong>Améliorer le service&nbsp;:</strong> à partir de retours anonymisés.</li>
+      </ul>
+      <p>
+        On ne fait <strong>aucun profilage publicitaire</strong> et on ne revend tes données à
+        personne.
+      </p>
+
+      <h2>4. Avec qui on les partage</h2>
+      <p>Uniquement des sous-traitants strictement nécessaires au fonctionnement&nbsp;:</p>
+      <ul>
+        <li><strong>Chariow</strong> — paiement en ligne (<a href="https://chariow.com" target="_blank" rel="noopener noreferrer">chariow.com</a>).</li>
+        <li><strong>Meta · WhatsApp</strong> — communication via WhatsApp Business.</li>
+        <li><strong>Vercel</strong> — hébergement du site (logs techniques).</li>
+        <li><strong>Google Workspace</strong> — emails (<a href="mailto:hi@helpallskills.com">hi@helpallskills.com</a>) et visios Google Meet pour les sessions.</li>
+      </ul>
+      <p>
+        Aucun transfert à des fins commerciales. Chacun de ces prestataires est lié par sa propre
+        politique de confidentialité.
+      </p>
+
+      <h2>5. Combien de temps on les garde</h2>
+      <ul>
+        <li><strong>Données de prospect</strong> (échanges avant achat)&nbsp;: 12 mois après le dernier contact.</li>
+        <li><strong>Données client</strong> (durant l&apos;accompagnement)&nbsp;: pendant toute la durée de la relation.</li>
+        <li><strong>Données comptables</strong> (factures, paiements)&nbsp;: 10 ans, durée légale de conservation.</li>
+        <li><strong>Logs techniques</strong>&nbsp;: 12 mois maximum.</li>
+      </ul>
+
+      <h2>6. Tes droits</h2>
+      <p>Conformément à la loi béninoise n°2017-20 et aux principes du RGPD, tu disposes des droits suivants&nbsp;:</p>
+      <ul>
+        <li><strong>Accès</strong>&nbsp;: savoir quelles données on a sur toi.</li>
+        <li><strong>Rectification</strong>&nbsp;: corriger une donnée inexacte.</li>
+        <li><strong>Effacement</strong>&nbsp;: demander la suppression de tes données.</li>
+        <li><strong>Opposition</strong>&nbsp;: t&apos;opposer à un traitement.</li>
+        <li><strong>Portabilité</strong>&nbsp;: récupérer tes données dans un format lisible.</li>
+        <li><strong>Limitation</strong>&nbsp;: figer un traitement le temps d&apos;une vérification.</li>
+      </ul>
+      <p>
+        Pour exercer ces droits, écris-nous à <a href="mailto:hi@helpallskills.com">hi@helpallskills.com</a>.
+        On répond sous 7 jours.
+      </p>
+      <p>
+        En cas de désaccord, tu peux saisir l&apos;<strong>Autorité de Protection des Données
+        Personnelles (APDP)</strong> du Bénin.
+      </p>
+
+      <h2>7. Sécurité</h2>
+      <p>
+        Tes données sont protégées par les mesures techniques standards&nbsp;: connexions chiffrées
+        (HTTPS), accès restreint aux outils utilisés (email, WhatsApp Business, Chariow). Aucun
+        système n&apos;est infaillible&nbsp;: si une fuite survenait, on te préviendrait sous 72h.
+      </p>
+
+      <h2>8. Cookies</h2>
+      <p>
+        Le site n&apos;utilise <strong>aucun cookie de tracking</strong>. Seuls des cookies techniques
+        strictement nécessaires (préférences d&apos;affichage, sécurité) peuvent être déposés. Aucun
+        consentement n&apos;est requis pour ces cookies essentiels.
+      </p>
+      <p>
+        Si on ajoute un outil de mesure d&apos;audience (Plausible, Umami…), il sera respectueux de
+        la vie privée, sans empreinte numérique, sans cookie tiers — et signalé ici.
+      </p>
+
+      <h2>9. Mineurs</h2>
+      <p>
+        Le service est ouvert aux personnes âgées de 16 ans et plus. Pour un mineur, le consentement
+        d&apos;un parent ou tuteur est requis avant tout paiement.
+      </p>
+
+      <h2>10. Modifications</h2>
+      <p>
+        Cette politique peut évoluer. La date de mise à jour est indiquée en haut de la page. En
+        cas de changement majeur, on te préviendra par email ou WhatsApp.
+      </p>
+    </LegalShell>
   );
-} 
+}

@@ -6,7 +6,7 @@ export default function AboutPage() {
   const stats = [
     { number: '21', label: 'Sept 2024 - Lancement' },
     { number: '100%', label: 'Francophone' },
-    { number: '4', label: 'Offres d\'accompagnement' },
+    { number: '3', label: 'Offres d\'accompagnement' },
     { number: '24/7', label: 'Support disponible' }
   ];
 
@@ -42,12 +42,12 @@ export default function AboutPage() {
     {
       year: 'Oct-Déc 2024',
       title: 'Premiers Clients & Base Solide',
-      description: 'Création du groupe WhatsApp, sessions gratuites, premiers témoignages et ventes des offres Starter, Booster, Express'
+      description: 'Création du groupe WhatsApp, sessions gratuites et premiers témoignages clients'
     },
     {
       year: 'Jan-Juin 2025',
       title: 'Croissance & Notoriété',
-      description: 'Lancement du site web officiel, développement de l\'offre Pro, partenariats locaux et création de contenus réguliers'
+      description: 'Lancement du site web officiel, développement du Mentorat Pro, partenariats locaux et création de contenus réguliers'
     },
     {
       year: 'Juil-Sept 2025',

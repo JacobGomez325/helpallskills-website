@@ -35,8 +35,10 @@ const Header = () => {
   }, []);
 
   const navLinks = [
+    { name: 'Offres', href: '/#offres' },
+    { name: 'Équipe', href: '/#coachs' },
+    { name: 'FAQ', href: '/#faq' },
     { name: 'À propos', href: '/about' },
-    { name: 'Contact', href: '/contact' },
   ];
 
   return (
@@ -107,16 +109,17 @@ const Header = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2, ease: [0.65, 0, 0.35, 1] }}
           >
-            <motion.button 
+            <motion.a
+              href="/#diagnostic"
               className="btn-primary btn-shine text-sm flex items-center gap-2 group relative overflow-hidden"
               whileHover={{ scale: 1.05, y: -1 }}
               whileTap={{ scale: 0.95 }}
             >
-              <span className="relative z-10">Parler à un expert</span>
+              <span className="relative z-10">Trouver mon offre</span>
               <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
               </svg>
-            </motion.button>
+            </motion.a>
           </motion.div>
 
           {/* Mobile Menu Button */}
@@ -202,15 +205,16 @@ const Header = () => {
                     visible: { opacity: 1, x: 0 }
                   }}
                 >
-                  <button 
+                  <a
+                    href="/#diagnostic"
                     className="btn-primary text-center text-sm flex items-center justify-center gap-2"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    <span>Parler à un expert</span>
+                    <span>Trouver mon offre</span>
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
                     </svg>
-                  </button>
+                  </a>
                 </motion.div>
               </motion.div>
             </motion.div>

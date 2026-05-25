@@ -8,22 +8,22 @@ const Footer = () => {
 
   const footerLinks = [
     {
-      title: "Services",
+      title: "Plateforme",
       links: [
-        { name: "Coaching", href: "https://helpallskills.com/#coaching", external: true },
-        { name: "Bootcamps", href: "https://helpallskills.com/#bootcamps", external: true },
-        { name: "Mentorat", href: "https://helpallskills.com/#mentorat", external: true },
-        { name: "Formations", href: "https://helpallskills.com/#formations", external: true },
+        { name: "Coachs", href: "/#coachs", external: false },
+        { name: "Mentorat", href: "/#offres", external: false },
+        { name: "FAQ", href: "/#faq", external: false },
+        { name: "À propos", href: "/about", external: false },
       ]
     },
     {
-      title: "Entreprise",
+      title: "Légal",
       links: [
-        { name: "À propos", href: "/about", external: false },
-        { name: "Nos experts", href: "https://helpallskills.com/#equipe", external: true },
-        { name: "Contact", href: "https://helpallskills.com/#contact", external: true },
+        { name: "Conditions générales", href: "/terms", external: false },
+        { name: "Confidentialité", href: "/privacy", external: false },
+        { name: "Mentions légales", href: "/legal", external: false },
       ]
-    }
+    },
   ];
   
   const fadeInUpVariants = {
@@ -69,9 +69,17 @@ const Footer = () => {
                 <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-turquoise to-blue-bright transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out origin-left"></span>
               </div>
             </Link>
-            <p className="text-base md:text-lg text-gray-400 mb-6 md:mb-8 max-w-md leading-relaxed">
-              Coaching tech premium et formations personnalisées pour révéler ton potentiel.
+            <p className="text-base md:text-lg text-gray-400 mb-6 max-w-md leading-relaxed">
+              1 heure avec un dev senior pour débloquer ton problème tech. Pour étudiants, juniors, seniors, freelances et founders.
             </p>
+            <div className="text-sm text-gray-400 mb-6 space-y-1">
+              <p>On répond sur WhatsApp en moins d&apos;1h en journée.</p>
+              <p>
+                <a href="https://wa.me/22901624357" target="_blank" rel="noopener noreferrer" className="text-turquoise hover:underline font-semibold">+229 01 62 43 57 41</a>
+                <span className="mx-2 text-gray-600">·</span>
+                <a href="mailto:hi@helpallskills.com" className="text-turquoise hover:underline font-semibold">hi@helpallskills.com</a>
+              </p>
+            </div>
             <div className="flex space-x-3 md:space-x-4">
               <motion.a 
                 href="https://www.linkedin.com/company/helpall-skills/" 
