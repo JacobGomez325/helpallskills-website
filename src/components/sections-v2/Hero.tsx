@@ -43,7 +43,7 @@ const Hero = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-base md:text-xl text-white/70 max-w-2xl mx-auto leading-relaxed mb-8"
           >
-            Quelqu&apos;un t&apos;a parlé de nous&nbsp;? Cool. Maintenant la vraie question : par où tu commences&nbsp;? On a 3 formules, 20 devs en poste — Deel, payDunya, Djamo, Crédit Agricole — et 30 secondes pour t&apos;orienter vers ce qui te correspond.
+            Quelqu&apos;un t&apos;a parlé de nous&nbsp;? Cool. Maintenant la vraie question : par où tu commences&nbsp;? On a 3 formules, 21 devs en poste — Deel, payDunya, Djamo, Kkiapay, Crédit Agricole — et 30 secondes pour t&apos;orienter vers ce qui te correspond.
           </motion.p>
 
           <motion.div
@@ -91,7 +91,7 @@ const Hero = () => {
               ))}
             </div>
             <div className="flex items-center gap-3">
-              <span className="font-semibold text-white/90">20 experts</span>
+              <span className="font-semibold text-white/90">21 experts</span>
               <span className="text-white/30">·</span>
               <span>devs en poste à Deel, payDunya, Djamo, Crédit Agricole…</span>
             </div>

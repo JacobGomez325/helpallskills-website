@@ -25,7 +25,7 @@ const FinalCta = () => {
           </span>
         </h2>
         <p className="text-base md:text-xl text-white/70 mb-8 max-w-xl mx-auto">
-          20 mentors disponibles, 2 formules, tu décides chaque mois si tu continues.
+          21 mentors disponibles, 2 formules, tu décides chaque mois si tu continues.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
           <a

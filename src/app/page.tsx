@@ -11,12 +11,12 @@ import FinalCta from '@/components/sections-v2/FinalCta';
 export const metadata = {
   title: 'Coaching & Mentorat Tech pour développeurs francophones',
   description:
-    "Trouve un mentor dédié ou réserve une session de coaching tech d'1h. 20 mentors en poste à Deel, payDunya, Djamo, Crédit Agricole. Coaching Express 5 000 FCFA, Mentorat Light 13 500 FCFA/mois, Mentorat Pro 25 000 FCFA/mois. Paiement Mobile Money via Chariow.",
+    "Trouve un mentor dédié ou réserve une session de coaching tech d'1h. 21 mentors en poste à Deel, payDunya, Djamo, Kkiapay, Crédit Agricole. Coaching Express 5 000 FCFA, Mentorat Light 13 500 FCFA/mois, Mentorat Pro 25 000 FCFA/mois. Paiement Mobile Money via Chariow.",
   alternates: { canonical: '/' },
   openGraph: {
     title: 'HelpAll Skills — Un mentor à toi. Tout un mois.',
     description:
-      '20 mentors en poste, 3 formules, paiement Mobile Money sécurisé via Chariow. Choisis ton mentor, choisis ton rythme.',
+      '21 mentors en poste, 3 formules, paiement Mobile Money sécurisé via Chariow. Choisis ton mentor, choisis ton rythme.',
     url: '/',
   },
 };
